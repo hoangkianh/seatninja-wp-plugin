@@ -1,0 +1,24 @@
+{
+  "name": "seatninja-wp-plugin",
+  "version": "1.0.0",
+  "description": "WordPress plugin for SeatNinja.com",
+  "main": "gulpfile.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hoangkianh/seatninja-wp-plugin.git"
+  },
+  "keywords": [
+    "seatninja",
+    "wordpress",
+    "plugin"
+  ],
+  "author": "Anh Hoang Nguyen (hka)",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/hoangkianh/seatninja-wp-plugin/issues"
+  },
+  "homepage": "https://github.com/hoangkianh/seatninja-wp-plugin#readme"
+}
