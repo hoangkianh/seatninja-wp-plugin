@@ -8,7 +8,7 @@ const autoprefixer = require( 'autoprefixer' )
 const assets = require( 'postcss-assets' )
 const reportError = require( './report-error' )
 const files = glob( 'src/*', { sync: true } )
-const plugin = files[0].reppackage.jsonlace( 'src/', '' )
+const plugin = files[0].replace( 'src/', '' )
 
 gulp.task( 'sass', function() {
     return gulp.src( 'src/' + plugin + '/assets/scss/*.scss' )
