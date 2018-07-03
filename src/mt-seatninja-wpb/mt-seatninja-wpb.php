@@ -37,7 +37,7 @@ if ( ! class_exists( 'MT_SeatNinja' ) ) {
 
             }
 
-            include_once( MT_SEATNINJA_DIR . '/inc/shortcode/mt-seatninja-shortcode.php' );
+            include_once( MT_SEATNINJA_DIR . '/inc/shortcode-mt-seatninja.php' );
         }
 
         /**
@@ -85,7 +85,7 @@ if ( ! class_exists( 'MT_SeatNinja' ) ) {
         }
 
         public function mt_snj_general_page() {
-            include_once( MT_SEATNINJA_DIR . '/inc/pages/settings.php' );
+            include_once( MT_SEATNINJA_DIR . '/inc/page-settings.php' );
         }
 
         public function admin_enqueue_scripts() {
