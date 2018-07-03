@@ -36,6 +36,8 @@ if ( ! class_exists( 'MT_SeatNinja' ) ) {
             } else {
 
             }
+
+            include_once( MT_SEATNINJA_DIR . '/inc/shortcode/mt-seatninja-shortcode.php' );
         }
 
         /**
