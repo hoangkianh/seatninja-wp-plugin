@@ -25,8 +25,17 @@ if ( ! class_exists( 'MT_SeatNinja' ) ) {
 
         public function __construct() {
             add_action( 'init', array( $this, 'load_textdomain' ), 10 );
-            add_action( 'admin_menu', array( $this, 'register_admin_menu' ) );
-            add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
+
+            if ( is_admin() ) {
+                add_action( 'admin_menu', array( $this, 'register_admin_menu' ) );
+                add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
+                add_action( 'wp_ajax_nopriv_mt_snj_save_settings',
+                    array( $this, 'mt_snj_save_settings' ) );
+                add_action( 'wp_ajax_mt_snj_save_settings',
+                    array( $this, 'mt_snj_save_settings' ) );
+            } else {
+
+            }
         }
 
         /**
@@ -60,7 +69,7 @@ if ( ! class_exists( 'MT_SeatNinja' ) ) {
                 esc_html__( 'Seat Ninja', 'mt-snj' ),
                 $capability,
                 'mt-snj-general',
-                array( $this, 'mt_seat_ninja_general_page' ),
+                array( $this, 'mt_snj_general_page' ),
                 'dashicons-carrot' );
 
             add_submenu_page( 'mt-snj-general',
@@ -73,12 +82,43 @@ if ( ! class_exists( 'MT_SeatNinja' ) ) {
             $submenu['mt-snj-general'][0][0] = esc_html__( 'General Settings', 'mt-snj' );
         }
 
-        public function mt_seat_ninja_general_page() {
+        public function mt_snj_general_page() {
             include_once( MT_SEATNINJA_DIR . '/inc/pages/settings.php' );
         }
 
-        public function enqueue_scripts() {
+        public function admin_enqueue_scripts() {
+            wp_enqueue_style( 'growl-js', MT_SEATNINJA_PATH . 'assets/libs/growl/jquery.growl.css' );
+            wp_enqueue_script( 'growl-js',
+                MT_SEATNINJA_PATH . 'assets/libs/growl/jquery.growl.min.js',
+                null,
+                null,
+                true );
 
+            wp_enqueue_style( 'mt-seatninja-wpb', MT_SEATNINJA_PATH . 'assets/css/mt-seatninja-wpb.css' );
+
+            wp_enqueue_script( 'mt-seatninja-wpb',
+                MT_SEATNINJA_PATH . 'assets/js/mt-seatninja-wpb.js',
+                null,
+                null,
+                true );
+            wp_localize_script( 'mt-seatninja-wpb',
+                'mtSeatNinja',
+                array(
+                    'ajax_url'   => esc_url( admin_url( 'admin-ajax.php' ) ),
+                    'ajax_nonce' => wp_create_nonce( 'mt-seatninja-wpb' ),
+                ) );
+        }
+
+        public function mt_snj_save_settings() {
+
+            check_ajax_referer( 'mt-seatninja-wpb', 'nonce' );
+
+            if ( ! isset( $_POST['snj_keys'] ) ) {
+                wp_send_json_error( 'Data is not sent' );
+            }
+
+            update_option( 'mt-snj-keys', $_POST['snj_keys'] );
+            wp_send_json_success( 'Saved successfully' );
         }
     }
 
