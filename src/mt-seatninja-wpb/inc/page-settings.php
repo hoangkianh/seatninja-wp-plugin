@@ -4,13 +4,7 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
-$snj_keys = get_option( 'mt-snj-keys' );
-$keys = array();
-
-foreach ( $snj_keys as $key ) {
-    $keys[ $key['name'] ] = $key['value'];
-}
-
+$keys = MT_SeatNinja::get_snj_keys();
 ?>
 <div class="wrap mt-snj-wrap">
   <div class="wrap-container">
@@ -41,8 +35,7 @@ foreach ( $snj_keys as $key ) {
               <td><input class="widefat" id="api-key" type="text" value="<?php echo esc_attr($keys['api-key']) ?>"/></td>
             </tr>
             <tr>
-              <th><label for="customer-token"><?php esc_html_e( 'Customer AuthToken',
-                          'mt-snj' ) ?></label></th>
+              <th><label for="customer-token"><?php esc_html_e( 'Customer AuthToken', 'mt-snj' ) ?></label></th>
               <td><input class="widefat" id="customer-token" type="text" value="<?php echo esc_attr($keys['customer-token']) ?>"/></td>
             </tr>
           </table>

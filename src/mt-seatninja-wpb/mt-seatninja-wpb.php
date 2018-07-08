@@ -15,6 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
+define( 'MT_SEATNINJA_API_URL', 'https://sandbox.seatninja.com' );
 define( 'MT_SEATNINJA_PATH', plugin_dir_url( __FILE__ ) );
 define( 'MT_SEATNINJA_DIR', dirname( __FILE__ ) );
 
@@ -38,6 +39,7 @@ if ( ! class_exists( 'MT_SeatNinja' ) ) {
             }
 
             include_once( MT_SEATNINJA_DIR . '/inc/shortcode-mt-seatninja.php' );
+            include_once( MT_SEATNINJA_DIR . '/inc/mt-seatninja-functions.php' );
         }
 
         /**
@@ -103,11 +105,16 @@ if ( ! class_exists( 'MT_SeatNinja' ) ) {
                 null,
                 null,
                 true );
+
+            $keys = self::get_snj_keys();
+
             wp_localize_script( 'mt-seatninja-wpb',
                 'mtSeatNinja',
                 array(
-                    'ajax_url'   => esc_url( admin_url( 'admin-ajax.php' ) ),
-                    'ajax_nonce' => wp_create_nonce( 'mt-seatninja-wpb' ),
+                    'ajax_url'       => esc_url( admin_url( 'admin-ajax.php' ) ),
+                    'ajax_nonce'     => wp_create_nonce( 'mt-seatninja-wpb' ),
+                    'api_key'        => $keys['api-key'],
+                    'customer_token' => $keys['customer-token'],
                 ) );
         }
 
@@ -121,6 +128,45 @@ if ( ! class_exists( 'MT_SeatNinja' ) ) {
 
             update_option( 'mt-snj-keys', $_POST['snj_keys'] );
             wp_send_json_success( 'Saved successfully' );
+        }
+
+        public static function get_snj_keys() {
+            $snj_keys = get_option( 'mt-snj-keys' );
+            $keys     = array();
+
+            foreach ( $snj_keys as $key ) {
+                $keys[ $key['name'] ] = $key['value'];
+            }
+
+            return $keys;
+        }
+
+        public static function getDataFromApi( $url, $args ) {
+
+            $curl = curl_init();
+
+            curl_setopt_array( $curl,
+                array(
+                    CURLOPT_URL            => $url,
+                    CURLOPT_RETURNTRANSFER => true,
+                    CURLOPT_TIMEOUT        => 30,
+                    CURLOPT_HTTP_VERSION   => CURL_HTTP_VERSION_1_1,
+                    CURLOPT_CUSTOMREQUEST  => 'GET',
+                    CURLOPT_HTTPHEADER     => $args
+                ) );
+
+            $response = curl_exec( $curl );
+            $err      = curl_error( $curl );
+
+            curl_close( $curl );
+
+            if ( $err ) {
+                $result = json_decode( $err, true );
+            } else {
+                $result = json_decode( $response, true );
+            }
+
+            return $result;
         }
     }
 

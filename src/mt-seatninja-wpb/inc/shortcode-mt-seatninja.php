@@ -22,5 +22,19 @@ function mt_seatninja( $atts ) {
 
     $html = array();
 
-    return sprintf( '<div class="%s">%s</div>', $css_class, implode( '\n', $html ) );
+    $restaurants = mt_snj_get_restaurants();
+    $html[] = '<select id="restaurants">';
+
+    if ( ! empty( $restaurants ) ) {
+
+        foreach ( $restaurants as $restaurant ) {
+            $html[] = '<option value="' . $restaurant['id'] . '">' .  $restaurant['name'] . ' - ' . $restaurant['id'] . '</option>';
+        }
+    }
+
+    $html[] = '</select>';
+
+    return sprintf( '<div class="%s">%s</div>',
+        trim( implode( ' ', $css_class ) ),
+        implode( '\n', $html ) );
 }
