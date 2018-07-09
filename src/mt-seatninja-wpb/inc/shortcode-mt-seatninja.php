@@ -24,11 +24,14 @@ function mt_seatninja( $atts ) {
 
     $html[] = '<div class="container">';
     $html[] = '<div class="row">';
+
     $html[] = '<div class="col-xs-12 col-md-8 mt-snj-main">';
 
 
     $restaurants = mt_snj_get_restaurants();
-    $html[] = '<select id="restaurants">';
+    $html[] = '<label for="restaurants">' . esc_html__('Select a restaurant', 'mt-snj') . '</label>';
+    $html[] = '<select id="restaurants-select">';
+    $html[] = '<option id="-1">---</option>';
 
     if ( ! empty( $restaurants ) ) {
 
@@ -39,8 +42,14 @@ function mt_seatninja( $atts ) {
 
     $html[] = '</select>';
     $html[] = '</div>';
-    $html[] = '<div class="col-xs-12 col-md-4 mt-snj-sidebar flex-md-first">';
+
+    $html[] = '<div class="col-xs-12 col-md-4 mt-snj-sidebar">';
+    $html[] = '<div id="mt-snj-map"></div>';
+    $html[] = '<div id="mt-snj-map">';
+    $html[] = '';
     $html[] = '</div>';
+    $html[] = '</div>';
+
     $html[] = '</div>';
     $html[] = '</div>';
 

@@ -31,12 +31,13 @@
                     $.ajax({
                         type: 'POST',
                         url: mtSeatNinja.ajax_url,
+                        timeout: 10000,
                         data: {
                             action: 'mt_snj_save_settings',
                             nonce: mtSeatNinja.ajax_nonce,
                             snj_keys: keys
                         },
-                        success: function( res ) {
+                        success: ( res ) => {
 
                             ajax_loading = false;
                             $form.removeClass('loading');
@@ -51,7 +52,7 @@
                                 $.growl.error({ title: '', message: res.data });
                             }
                         },
-                        error: function( err ) {
+                        error: ( err ) => {
                             console.log(err);
                             $.growl.error({ title: '', message: err });
                         }

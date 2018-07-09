@@ -35,7 +35,7 @@ if ( ! class_exists( 'MT_SeatNinja' ) ) {
                 add_action( 'wp_ajax_mt_snj_save_settings',
                     array( $this, 'mt_snj_save_settings' ) );
             } else {
-
+                add_action( 'wp_enqueue_scripts', array( $this, 'frontend_enqueue_scripts' ) );
             }
 
             include_once( MT_SEATNINJA_DIR . '/inc/shortcode-mt-seatninja.php' );
@@ -106,15 +106,26 @@ if ( ! class_exists( 'MT_SeatNinja' ) ) {
                 null,
                 true );
 
-            $keys = self::get_snj_keys();
+            wp_localize_script( 'mt-seatninja-wpb',
+                'mtSeatNinja',
+                array(
+                    'ajax_url'       => esc_url( admin_url( 'admin-ajax.php' ) ),
+                    'ajax_nonce'     => wp_create_nonce( 'mt-seatninja-wpb' )
+                ) );
+        }
+
+        public function frontend_enqueue_scripts() {
+            wp_enqueue_script( 'mt-seatninja-wpb',
+                MT_SEATNINJA_PATH . 'assets/js/mt-seatninja-wpb-frontend.js',
+                null,
+                null,
+                true );
 
             wp_localize_script( 'mt-seatninja-wpb',
                 'mtSeatNinja',
                 array(
                     'ajax_url'       => esc_url( admin_url( 'admin-ajax.php' ) ),
-                    'ajax_nonce'     => wp_create_nonce( 'mt-seatninja-wpb' ),
-                    'api_key'        => $keys['api-key'],
-                    'customer_token' => $keys['customer-token'],
+                    'ajax_nonce'     => wp_create_nonce( 'mt-seatninja-wpb' )
                 ) );
         }
 
@@ -141,7 +152,7 @@ if ( ! class_exists( 'MT_SeatNinja' ) ) {
             return $keys;
         }
 
-        public static function getDataFromApi( $url, $args ) {
+        public static function getDataFromApi( $method, $url, $args ) {
 
             $curl = curl_init();
 
@@ -151,7 +162,7 @@ if ( ! class_exists( 'MT_SeatNinja' ) ) {
                     CURLOPT_RETURNTRANSFER => true,
                     CURLOPT_TIMEOUT        => 30,
                     CURLOPT_HTTP_VERSION   => CURL_HTTP_VERSION_1_1,
-                    CURLOPT_CUSTOMREQUEST  => 'GET',
+                    CURLOPT_CUSTOMREQUEST  => $method,
                     CURLOPT_HTTPHEADER     => $args
                 ) );
 
