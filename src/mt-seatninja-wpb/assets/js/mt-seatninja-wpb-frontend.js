@@ -19,7 +19,6 @@
                             nonce: mtSeatNinja.ajax_nonce
                         },
                         success: (res) => {
-
                         },
                         error: (error) => {
                             console.log(error);

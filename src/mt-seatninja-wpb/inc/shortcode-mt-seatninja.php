@@ -43,10 +43,18 @@ function mt_seatninja( $atts ) {
     $html[] = '</select>';
     $html[] = '</div>';
 
-    $html[] = '<div class="col-xs-12 col-md-4 mt-snj-sidebar">';
+    $html[] = '<div class="col-xs-12 col-md-4 mt-snj-details">';
     $html[] = '<div id="mt-snj-map"></div>';
-    $html[] = '<div id="mt-snj-map">';
-    $html[] = '';
+    $html[] = '<div class="mt-snj-info">';
+    $html[] = '<div class="row">';
+    $html[] = '<div class="col-md-8">';
+    $html[] = '<p class="mt-snj-info__address"><span class="glyphicon icon-location"></span></p>';
+    $html[] = '<p class="mt-snj-info__phone"><span class="glyphicon icon-phone-outline"></span></p>';
+    $html[] = '<p class="mt-snj-info__url"><span class="glyphicon icon-link"></span></p>';
+    $html[] = '</div>';
+    $html[] = '<div class="col-md-4">';
+    $html[] = '<img class="mt-snj-info__logo" />';
+    $html[] = '</div>';
     $html[] = '</div>';
     $html[] = '</div>';
 
