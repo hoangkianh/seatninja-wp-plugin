@@ -27,20 +27,10 @@ function mt_seatninja( $atts ) {
 
     $html[] = '<div class="col-xs-12 col-md-8 mt-snj-main">';
 
+    mt_seatninja_restaurant_selectbox();
 
-    $restaurants = mt_snj_get_restaurants();
-    $html[] = '<label for="restaurants">' . esc_html__('Select a restaurant', 'mt-snj') . '</label>';
-    $html[] = '<select id="restaurants-select">';
-    $html[] = '<option id="-1">---</option>';
+    mt_seatninja_partysize_selectbox();
 
-    if ( ! empty( $restaurants ) ) {
-
-        foreach ( $restaurants as $restaurant ) {
-            $html[] = '<option value="' . $restaurant['id'] . '">' .  $restaurant['name'] . ' - ' . $restaurant['id'] . '</option>';
-        }
-    }
-
-    $html[] = '</select>';
     $html[] = '</div>';
 
     $html[] = '<div class="col-xs-12 col-md-4 mt-snj-details">';

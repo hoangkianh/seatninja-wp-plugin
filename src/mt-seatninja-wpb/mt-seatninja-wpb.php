@@ -40,6 +40,7 @@ if ( ! class_exists( 'MT_SeatNinja' ) ) {
 
             include_once( MT_SEATNINJA_DIR . '/inc/shortcode-mt-seatninja.php' );
             include_once( MT_SEATNINJA_DIR . '/inc/mt-seatninja-functions.php' );
+            include_once( MT_SEATNINJA_DIR . '/inc/mt-seatninja-template-functions.php' );
         }
 
         /**
@@ -109,8 +110,8 @@ if ( ! class_exists( 'MT_SeatNinja' ) ) {
             wp_localize_script( 'mt-seatninja-wpb',
                 'mtSeatNinja',
                 array(
-                    'ajax_url'       => esc_url( admin_url( 'admin-ajax.php' ) ),
-                    'ajax_nonce'     => wp_create_nonce( 'mt-seatninja-wpb' )
+                    'ajax_url'   => esc_url( admin_url( 'admin-ajax.php' ) ),
+                    'ajax_nonce' => wp_create_nonce( 'mt-seatninja-wpb' ),
                 ) );
         }
 
@@ -124,8 +125,9 @@ if ( ! class_exists( 'MT_SeatNinja' ) ) {
             wp_localize_script( 'mt-seatninja-wpb',
                 'mtSeatNinja',
                 array(
-                    'ajax_url'       => esc_url( admin_url( 'admin-ajax.php' ) ),
-                    'ajax_nonce'     => wp_create_nonce( 'mt-seatninja-wpb' )
+                    'ajax_url'      => esc_url( admin_url( 'admin-ajax.php' ) ),
+                    'ajax_nonce'    => wp_create_nonce( 'mt-seatninja-wpb' ),
+                    'party_of_text' => esc_html__( 'Party of', 'mt-snj' ),
                 ) );
         }
 
@@ -163,7 +165,7 @@ if ( ! class_exists( 'MT_SeatNinja' ) ) {
                     CURLOPT_TIMEOUT        => 30,
                     CURLOPT_HTTP_VERSION   => CURL_HTTP_VERSION_1_1,
                     CURLOPT_CUSTOMREQUEST  => $method,
-                    CURLOPT_HTTPHEADER     => $args
+                    CURLOPT_HTTPHEADER     => $args,
                 ) );
 
             $response = curl_exec( $curl );
