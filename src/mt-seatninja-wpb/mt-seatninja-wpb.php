@@ -116,6 +116,13 @@ if ( ! class_exists( 'MT_SeatNinja' ) ) {
         }
 
         public function frontend_enqueue_scripts() {
+            wp_enqueue_style( 'datetimepicker', MT_SEATNINJA_PATH . 'assets/libs/datetimepicker/jquery.datetimepicker.min.css' );
+            wp_enqueue_script( 'datetimepicker',
+                MT_SEATNINJA_PATH . 'assets/libs/datetimepicker/jquery.datetimepicker.full.min.js',
+                null,
+                null,
+                true );
+
             wp_enqueue_script( 'mt-seatninja-wpb',
                 MT_SEATNINJA_PATH . 'assets/js/mt-seatninja-wpb-frontend.js',
                 null,

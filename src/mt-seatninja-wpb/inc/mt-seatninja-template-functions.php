@@ -32,3 +32,13 @@ function mt_seatninja_partysize_selectbox () {
 
     echo implode( '', $html );
 }
+
+function mt_seatninja_date_picker () {
+
+    $html = array();
+
+    $html[] = '<label for="party-size">' . esc_html__('Date', 'mt-snj') . '</label>';
+    $html[] = '<input id="datetimepicker" type="text" >';
+
+    echo implode( '', $html );
+}

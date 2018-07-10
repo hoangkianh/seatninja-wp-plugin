@@ -34,6 +34,8 @@ function mt_seatninja( $atts ) {
 
         mt_seatninja_partysize_selectbox();
 
+        mt_seatninja_date_picker();
+
         $html[] = '</div>';
 
         $html[] = '<div class="col-xs-12 col-md-4 mt-snj-details">';

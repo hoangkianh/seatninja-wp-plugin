@@ -2,7 +2,34 @@
     mtui_wpb_frontend = (function () {
         return {
             init                : function () {
+                this.dateTimePicker()
+                this.partySizeSelectBox()
                 this.getRestaurantProfile()
+            },
+            dateTimePicker: function () {
+                var self = this
+
+                $('#datetimepicker').datetimepicker({
+                    timepicker: false,
+                    format: 'M d',
+                    onChangeDateTime:function(e, $input){
+                        self.getReservationTimes()
+                    }
+                })
+            },
+            partySizeSelectBox: function () {
+                var self = this
+
+                $('#party-size').on('click', function () {
+                    self.getReservationTimes()
+                })
+            },
+            getReservationTimes: function () {
+                let partySize = $('#party-size').val()
+                let date      = $('#datetimepicker').datetimepicker('getValue')
+
+                console.log(partySize)
+                console.log(date)
             },
             getRestaurantProfile: function () {
 
