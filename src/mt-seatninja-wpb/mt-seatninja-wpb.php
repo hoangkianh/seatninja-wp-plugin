@@ -161,9 +161,12 @@ if ( ! class_exists( 'MT_SeatNinja' ) ) {
             return $keys;
         }
 
-        public static function getDataFromApi( $method, $url, $args ) {
+        public static function getDataFromApi( $method, $url, $args = array() ) {
 
             $curl = curl_init();
+
+            $keys = self::get_snj_keys();
+            $args = array_merge($args, array( 'x-api-key:' . $keys['api-key'] ) );
 
             curl_setopt_array( $curl,
                 array(

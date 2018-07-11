@@ -6,30 +6,64 @@
                 this.partySizeSelectBox()
                 this.getRestaurantProfile()
             },
-            dateTimePicker: function () {
+            formatDate          : function (date) {
+                var d     = new Date(date),
+                    month = '' + (d.getMonth() + 1),
+                    day   = '' + d.getDate(),
+                    year  = d.getFullYear()
+
+                if (month.length < 2) {
+                    month = '0' + month
+                }
+                if (day.length < 2) {
+                    day = '0' + day
+                }
+
+                return [month, day, year].join('-')
+            },
+            dateTimePicker      : function () {
                 var self = this
 
                 $('#datetimepicker').datetimepicker({
-                    timepicker: false,
-                    format: 'M d',
-                    onChangeDateTime:function(e, $input){
+                    timepicker      : false,
+                    format          : 'M d',
+                    onChangeDateTime: function (e, $input) {
                         self.getReservationTimes()
                     }
                 })
             },
-            partySizeSelectBox: function () {
+            partySizeSelectBox  : function () {
                 var self = this
 
                 $('#party-size').on('click', function () {
                     self.getReservationTimes()
                 })
             },
-            getReservationTimes: function () {
+            getReservationTimes : function () {
+                let self = this
+                let restaurant_id = $('#restaurants-select').val()
                 let partySize = $('#party-size').val()
-                let date      = $('#datetimepicker').datetimepicker('getValue')
+                let date = $('#datetimepicker').datetimepicker('getValue')
 
-                console.log(partySize)
-                console.log(date)
+                if (partySize > 0 && date) {
+                    $.ajax({
+                        type   : 'GET',
+                        url    : mtSeatNinja.ajax_url,
+                        timeout: 10000,
+                        data   : {
+                            action       : 'get_reservation_times',
+                            restaurant_id: restaurant_id,
+                            party_size   : partySize,
+                            date         : self.formatDate(date),
+                            nonce        : mtSeatNinja.ajax_nonce
+                        },
+                        success: (res) => {
+                        },
+                        error  : (error) => {
+                            console.log(error)
+                        }
+                    })
+                }
             },
             getRestaurantProfile: function () {
 
@@ -76,7 +110,8 @@
                             }
 
                             for (let i = minPartySize; i <= maxPartySize; i++) {
-                                $options += '<option value="' + i + '">' + mtSeatNinja.party_of_text + ' ' + i + '</option>'
+                                $options +=
+                                    '<option value="' + i + '">' + mtSeatNinja.party_of_text + ' ' + i + '</option>'
                             }
 
                             $('#party-size').html($options)
