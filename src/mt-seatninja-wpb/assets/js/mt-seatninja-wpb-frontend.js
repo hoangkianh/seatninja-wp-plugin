@@ -75,7 +75,7 @@
                         url    : mtSeatNinja.ajax_url,
                         timeout: 10000,
                         data   : {
-                            action       : 'get_restaurant_details_from_db',
+                            action       : 'get_restaurant_profile_from_db',
                             restaurant_id: id,
                             nonce        : mtSeatNinja.ajax_nonce
                         },

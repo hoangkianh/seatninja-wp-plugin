@@ -22,7 +22,7 @@ function mt_snj_get_restaurant_details() {
 
     check_ajax_referer( 'mt-seatninja-wpb', 'nonce' );
 
-    $id   = isset( $_REQUEST['restaurant_id'] ) ? $_REQUEST['restaurant_id'] : '';
+    $id = isset( $_REQUEST['restaurant_id'] ) ? $_REQUEST['restaurant_id'] : '';
 
     if ( ! $id ) {
         wp_send_json( array( 'error' => esc_html__( 'Restaurant ID is not set', 'mt-snj' ) ) );
@@ -45,7 +45,7 @@ function mt_snj_get_restaurant_details() {
 add_action( 'wp_ajax_nopriv_get_restaurant_details', 'mt_snj_get_restaurant_details' );
 add_action( 'wp_ajax_get_restaurant_details', 'mt_snj_get_restaurant_details' );
 
-function mt_snj_get_restaurant_details_from_db() {
+function mt_snj_get_restaurant_profile_from_db() {
 
     $restaurants = mt_snj_get_restaurants();
     $id          = isset( $_REQUEST['restaurant_id'] ) ? $_REQUEST['restaurant_id'] : '';
@@ -63,14 +63,14 @@ function mt_snj_get_restaurant_details_from_db() {
     }
 }
 
-add_action( 'wp_ajax_nopriv_get_restaurant_details_from_db', 'mt_snj_get_restaurant_details_from_db' );
-add_action( 'wp_ajax_get_restaurant_details_from_db', 'mt_snj_get_restaurant_details_from_db' );
+add_action( 'wp_ajax_nopriv_get_restaurant_profile_from_db', 'mt_snj_get_restaurant_profile_from_db' );
+add_action( 'wp_ajax_get_restaurant_profile_from_db', 'mt_snj_get_restaurant_profile_from_db' );
 
 function mt_snj_get_restaurant_profile() {
 
     check_ajax_referer( 'mt-seatninja-wpb', 'nonce' );
 
-    $id   = isset( $_REQUEST['restaurant_id'] ) ? $_REQUEST['restaurant_id'] : '';
+    $id = isset( $_REQUEST['restaurant_id'] ) ? $_REQUEST['restaurant_id'] : '';
 
     if ( ! $id ) {
         wp_send_json( array( 'error' => esc_html__( 'Restaurant ID is not set', 'mt-snj' ) ) );
@@ -120,6 +120,24 @@ function mt_snj_get_reservation_times() {
     if ( ! $date ) {
         wp_send_json( array( 'error' => esc_html__( 'Date is not set', 'mt-snj' ) ) );
     }
+
+    $restaurants = mt_snj_get_restaurants();
+    $location    = array(
+        'lat' => '',
+        'lon' => '',
+    );
+    $timeZone = '';
+
+    foreach ( $restaurants as $restaurant ) {
+
+        if ( $restaurant['id'] == $id ) {
+            $location['lat'] = $restaurant['lat'];
+            $location['lon'] = $restaurant['lon'];
+            break;
+        }
+    }
+
+    MT_SeatNinja::getTimeInUSA( $location );
 
     $result = MT_SeatNinja::getDataFromApi( 'GET',
         MT_SEATNINJA_API_URL . '/reservations/' . $id . '/availabletimes/' . $date . '/' . $partySize );

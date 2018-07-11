@@ -116,7 +116,8 @@ if ( ! class_exists( 'MT_SeatNinja' ) ) {
         }
 
         public function frontend_enqueue_scripts() {
-            wp_enqueue_style( 'datetimepicker', MT_SEATNINJA_PATH . 'assets/libs/datetimepicker/jquery.datetimepicker.min.css' );
+            wp_enqueue_style( 'datetimepicker',
+                MT_SEATNINJA_PATH . 'assets/libs/datetimepicker/jquery.datetimepicker.min.css' );
             wp_enqueue_script( 'datetimepicker',
                 MT_SEATNINJA_PATH . 'assets/libs/datetimepicker/jquery.datetimepicker.full.min.js',
                 null,
@@ -166,7 +167,7 @@ if ( ! class_exists( 'MT_SeatNinja' ) ) {
             $curl = curl_init();
 
             $keys = self::get_snj_keys();
-            $args = array_merge($args, array( 'x-api-key:' . $keys['api-key'] ) );
+            $args = array_merge( $args, array( 'x-api-key:' . $keys['api-key'] ) );
 
             curl_setopt_array( $curl,
                 array(
@@ -190,6 +191,27 @@ if ( ! class_exists( 'MT_SeatNinja' ) ) {
             }
 
             return $result;
+        }
+
+        public static function getTimeInUSA( $location ) {
+
+            $keys = self::get_snj_keys();
+
+            if ( ! isset( $keys['google-api-key'] ) ) {
+                $keys['google-api-key'] = 'AIzaSyAv8AhrCUo0ay3PKhh4TtiWcETNCSvwwgI';
+            }
+
+            $url          = 'https://maps.googleapis.com/maps/api/timezone/json?location=' . $location['lat'] . ',' . $location['lon'] . '&timestamp=' . time() . '&key=' . $keys['google-api-key'];
+            $response     = file_get_contents( $url );
+            $usa_timezone = json_decode( $response, true );
+
+            $timezone     = new DateTimeZone( $usa_timezone['timeZoneId'] );
+            $current_time = new DateTime( date() );
+
+            $current_time->setTimezone( $timezone );
+            $current_time_USA = $current_time->format( 'Y-m-d H:i:s' );
+
+            return $current_time_USA;
         }
     }
 
