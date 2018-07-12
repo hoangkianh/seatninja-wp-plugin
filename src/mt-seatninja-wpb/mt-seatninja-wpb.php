@@ -193,7 +193,7 @@ if ( ! class_exists( 'MT_SeatNinja' ) ) {
             return $result;
         }
 
-        public static function getTimeInUSA( $location ) {
+        public static function getUSATimeZone( $location ) {
 
             $keys = self::get_snj_keys();
 
@@ -201,17 +201,13 @@ if ( ! class_exists( 'MT_SeatNinja' ) ) {
                 $keys['google-api-key'] = 'AIzaSyAv8AhrCUo0ay3PKhh4TtiWcETNCSvwwgI';
             }
 
-            $url          = 'https://maps.googleapis.com/maps/api/timezone/json?location=' . $location['lat'] . ',' . $location['lon'] . '&timestamp=' . time() . '&key=' . $keys['google-api-key'];
-            $response     = file_get_contents( $url );
-            $usa_timezone = json_decode( $response, true );
+            $url      = 'https://maps.googleapis.com/maps/api/timezone/json?location=' . $location['lat'] . ',' . $location['lon'] . '&timestamp=' . time() . '&key=' . $keys['google-api-key'];
+            $response = file_get_contents( $url );
+            $timezone = json_decode( $response, true );
 
-            $timezone     = new DateTimeZone( $usa_timezone['timeZoneId'] );
-            $current_time = new DateTime( date() );
+            $usa_timezone = new DateTimeZone( $timezone['timeZoneId'] );
 
-            $current_time->setTimezone( $timezone );
-            $current_time_USA = $current_time->format( 'Y-m-d H:i:s' );
-
-            return $current_time_USA;
+            return $usa_timezone;
         }
     }
 

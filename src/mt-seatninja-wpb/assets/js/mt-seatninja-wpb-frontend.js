@@ -26,7 +26,7 @@
 
                 $('#datetimepicker').datetimepicker({
                     timepicker      : false,
-                    format          : 'M d',
+                    format          : 'M d Y',
                     onChangeDateTime: function (e, $input) {
                         self.getReservationTimes()
                     }
