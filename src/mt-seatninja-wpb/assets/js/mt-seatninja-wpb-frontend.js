@@ -25,8 +25,8 @@
                 var self = this
 
                 $('#datetimepicker').datetimepicker({
-                    timepicker      : false,
-                    format          : 'M d Y',
+                    timepicker: false,
+                    format    : 'M d Y',
                     onChangeDateTime: function (e, $input) {
                         self.getReservationTimes()
                     }
@@ -35,7 +35,7 @@
             partySizeSelectBox  : function () {
                 var self = this
 
-                $('#party-size').on('click', function () {
+                $('#party-size').on('change', function () {
                     self.getReservationTimes()
                 })
             },
@@ -43,7 +43,7 @@
                 let self = this
                 let restaurant_id = $('#restaurants-select').val()
                 let partySize = $('#party-size').val()
-                let date = $('#datetimepicker').datetimepicker('getValue')
+                let date = $('#datetimepicker').val()
 
                 if (partySize > 0 && date) {
                     $.ajax({

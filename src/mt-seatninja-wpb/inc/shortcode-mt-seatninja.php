@@ -30,11 +30,11 @@ function mt_seatninja( $atts ) {
     if ( ! empty( $keys) ) {
         $html[] = '<div class="col-xs-12 col-md-8 mt-snj-main">';
 
-        mt_seatninja_restaurant_selectbox();
+        $html[] = mt_seatninja_restaurant_selectbox();
 
-        mt_seatninja_partysize_selectbox();
+        $html[] = mt_seatninja_partysize_selectbox();
 
-        mt_seatninja_date_picker();
+        $html[] = mt_seatninja_date_picker();
 
         $html[] = '</div>';
 

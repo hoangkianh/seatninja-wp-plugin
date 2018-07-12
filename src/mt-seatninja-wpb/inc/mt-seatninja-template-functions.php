@@ -18,7 +18,7 @@ function mt_seatninja_restaurant_selectbox () {
 
     $html[] = '</select>';
 
-    echo implode( '', $html );
+    return implode( '', $html );
 }
 
 function mt_seatninja_partysize_selectbox () {
@@ -30,7 +30,7 @@ function mt_seatninja_partysize_selectbox () {
     $html[] = '<option value="-1">---</option>';
     $html[] = '</select>';
 
-    echo implode( '', $html );
+    return implode( '', $html );
 }
 
 function mt_seatninja_date_picker () {
@@ -40,5 +40,5 @@ function mt_seatninja_date_picker () {
     $html[] = '<label for="party-size">' . esc_html__('Date', 'mt-snj') . '</label>';
     $html[] = '<input id="datetimepicker" type="text" >';
 
-    echo implode( '', $html );
+    return implode( '', $html );
 }
