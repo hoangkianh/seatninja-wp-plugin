@@ -36,6 +36,8 @@ function mt_seatninja( $atts ) {
 
         $html[] = mt_seatninja_date_picker();
 
+        $html[] = '<div class="mt-snj-times"></div>';
+
         $html[] = '</div>';
 
         $html[] = '<div class="col-xs-12 col-md-4 mt-snj-details">';
