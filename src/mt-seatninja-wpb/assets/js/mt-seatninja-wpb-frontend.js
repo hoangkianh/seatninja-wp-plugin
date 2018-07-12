@@ -5,6 +5,10 @@
                 this.dateTimePicker()
                 this.partySizeSelectBox()
                 this.getRestaurantProfile()
+
+                if (mtSeatNinja.gmaps_api_key) {
+                    this.gmap()
+                }
             },
             formatDate          : function (date) {
                 var d     = new Date(date),
@@ -121,6 +125,16 @@
                         }
                     })
                 })
+            },
+            gmap: function () {
+                var center = [37.772323, -122.214897];
+                $('#mt-snj-map').gmap3({
+                    center: center,
+                    zoom: 12,
+                    mapTypeId : google.maps.MapTypeId.ROADMAP
+                }).marker({
+                    position: center
+                });
             }
         }
     }())

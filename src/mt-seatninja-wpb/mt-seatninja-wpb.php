@@ -116,10 +116,25 @@ if ( ! class_exists( 'MT_SeatNinja' ) ) {
         }
 
         public function frontend_enqueue_scripts() {
+
+            $keys = self::get_snj_keys();
+
             wp_enqueue_style( 'datetimepicker',
                 MT_SEATNINJA_PATH . 'assets/libs/datetimepicker/jquery.datetimepicker.min.css' );
             wp_enqueue_script( 'datetimepicker',
                 MT_SEATNINJA_PATH . 'assets/libs/datetimepicker/jquery.datetimepicker.full.min.js',
+                null,
+                null,
+                true );
+
+            wp_enqueue_script( 'gmap3',
+                MT_SEATNINJA_PATH . 'assets/libs/gmap3/gmap3.min.js',
+                null,
+                null,
+                true );
+
+            wp_enqueue_script( 'google-map',
+                'https://maps.googleapis.com/maps/api/js?key=' . $keys['google-api-key'],
                 null,
                 null,
                 true );
@@ -136,7 +151,10 @@ if ( ! class_exists( 'MT_SeatNinja' ) ) {
                     'ajax_url'      => esc_url( admin_url( 'admin-ajax.php' ) ),
                     'ajax_nonce'    => wp_create_nonce( 'mt-seatninja-wpb' ),
                     'party_of_text' => esc_html__( 'Party of', 'mt-snj' ),
+                    'gmaps_api_key' => $keys['google-api-key']
                 ) );
+
+            wp_enqueue_style( 'mt-seatninja-wpb', MT_SEATNINJA_PATH . 'assets/css/mt-seatninja-wpb-frontend.css' );
         }
 
         public function mt_snj_save_settings() {
