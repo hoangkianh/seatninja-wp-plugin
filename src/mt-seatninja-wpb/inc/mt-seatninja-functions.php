@@ -196,10 +196,9 @@ function mt_snj_get_reservation_times() {
             $current_time = new DateTime( $time );
             $current_time->setTimezone( $usa_timezone );
             $time_USA      = $current_time->format( 'H:i' );
-            $date_USA  = $current_time->format( 'Y-m-d' );
             $ts['times'][] = array(
                 'text'  => $time_USA,
-                'value' => $date_USA . 'T' . $time_USA . ':00.000Z'
+                'value' => $time
             );
         }
 
