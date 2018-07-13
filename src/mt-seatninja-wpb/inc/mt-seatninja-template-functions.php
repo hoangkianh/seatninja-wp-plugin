@@ -28,9 +28,7 @@ function mt_seatninja_partysize_selectbox () {
     $html[] = '<label for="party-size">' . esc_html__('Party Size', 'mt-snj') . '</label>';
     $html[] = '<select id="party-size">';
     $html[] = '<option value="-1">---</option>';
-    for ($i = 4; $i <= 12; $i++) {
-        $html[] = '<option value="' . $i . '">' . esc_html__( 'Party of ', 'mt-snj' ) . $i . '</option>';
-    }
+
     $html[] = '</select>';
 
     return implode( '', $html );

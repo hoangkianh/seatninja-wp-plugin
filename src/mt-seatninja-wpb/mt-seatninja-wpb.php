@@ -150,6 +150,7 @@ if ( ! class_exists( 'MT_SeatNinja' ) ) {
                 array(
                     'ajax_url'      => esc_url( admin_url( 'admin-ajax.php' ) ),
                     'ajax_nonce'    => wp_create_nonce( 'mt-seatninja-wpb' ),
+                    'party_of_text' => esc_html__( 'Party of', 'mt-snj' ),
                     'gmaps_api_key' => $keys['google-api-key']
                 ) );
 
