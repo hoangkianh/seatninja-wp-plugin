@@ -3,7 +3,8 @@
         return {
             init                : function () {
                 var currentDate,
-                    map, marker
+                    map,
+                    marker
                 this.dateTimePicker()
                 this.partySizeSelectBox()
                 this.getRestaurantProfile()
@@ -61,7 +62,7 @@
                     $.ajax({
                         type   : 'GET',
                         url    : mtSeatNinja.ajax_url,
-                        timeout: 10000,
+                        timeout: 30000,
                         data   : {
                             action       : 'get_reservation_times',
                             restaurant_id: restaurant_id,
@@ -83,7 +84,7 @@
                                 for (let j = 0; j < times.length; j++) {
                                     html += '<li class="col-md-3 col-xs-6 mt-snj-times-list__item">'
                                     html +=
-                                        '<a href="#" class="mt-snj-times-list__link" data-value="' + times[j].value + '">' + times[j].text + '</a>'
+                                        '<a href="#reservation-modal" class="mt-snj-times-list__link" data-value="' + times[j].value + '">' + times[j].text + '</a>'
                                     html += '</li>'
                                 }
 
@@ -91,6 +92,7 @@
                             }
 
                             $('.mt-snj-times').html(html)
+                            self.reservationModal()
                         },
                         error  : (error) => {
                             console.log(error)
@@ -124,7 +126,7 @@
                                 }
 
                                 self.marker.setPosition(location)
-                                self.map.panTo(self.marker.getPosition());
+                                self.map.panTo(self.marker.getPosition())
 
                             }
                         },
@@ -187,6 +189,11 @@
                     map     : self.map
                 })
 
+            },
+            reservationModal    : function () {
+                $('.mt-snj-times-list__link').magnificPopup({
+                    type : 'inline'
+                })
             }
         }
     }())

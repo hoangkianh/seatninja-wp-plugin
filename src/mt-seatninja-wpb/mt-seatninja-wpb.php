@@ -127,14 +127,16 @@ if ( ! class_exists( 'MT_SeatNinja' ) ) {
                 null,
                 true );
 
-            wp_enqueue_script( 'gmap3',
-                MT_SEATNINJA_PATH . 'assets/libs/gmap3/gmap3.min.js',
+            wp_enqueue_script( 'google-map',
+                'https://maps.googleapis.com/maps/api/js?key=' . $keys['google-api-key'],
                 null,
                 null,
                 true );
 
-            wp_enqueue_script( 'google-map',
-                'https://maps.googleapis.com/maps/api/js?key=' . $keys['google-api-key'],
+            wp_enqueue_style( 'magnific-popup',
+                MT_SEATNINJA_PATH . 'assets/libs/magnific-popup/magnific-popup.css' );
+            wp_enqueue_script( 'magnific-popup',
+                MT_SEATNINJA_PATH . 'assets/libs/magnific-popup/jquery.magnific-popup.min.js',
                 null,
                 null,
                 true );

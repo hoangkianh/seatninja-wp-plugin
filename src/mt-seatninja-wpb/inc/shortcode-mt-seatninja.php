@@ -27,7 +27,7 @@ function mt_seatninja( $atts ) {
     $html[] = '<div class="container">';
     $html[] = '<div class="row">';
 
-    if ( ! empty( $keys) ) {
+    if ( ! empty( $keys ) ) {
         $html[] = '<div class="col-xs-12 col-md-8 mt-snj-main">';
 
         $html[] = mt_seatninja_restaurant_selectbox();
@@ -57,10 +57,36 @@ function mt_seatninja( $atts ) {
 
         $html[] = '</div>';
         $html[] = '</div>';
+
+        $html[] = '<div id="reservation-modal" class="mfp-hide">';
+        $html[] = '<form class="mt-snj-reservation-form">';
+        $html[] = '<div class="mt-snj-input-group">';
+        $html[] = '<label for="first-name">First Name <mark>*</mark></label>';
+        $html[] = '<input type="text" name="first-name" id="first-name" required />';
+        $html[] = '</div>';
+        $html[] = '<div class="mt-snj-input-group">';
+        $html[] = '<label for="last-name">Last Name</label>';
+        $html[] = '<input type="text" name="last-name" id="last-name" />';
+        $html[] = '</div>';
+        $html[] = '<div class="mt-snj-input-group">';
+        $html[] = '<label for="phone">Phone Number<mark>*</mark></label>';
+        $html[] = '<input type="text" name="phone" id="phone" required />';
+        $html[] = '</div>';
+        $html[] = '<div class="mt-snj-input-group">';
+        $html[] = '<label for="email">Email<mark>*</mark></label>';
+        $html[] = '<input type="email" name="email" id="email" required />';
+        $html[] = '</div>';
+        $html[] = '<div class="mt-snj-input-group">';
+        $html[] = '<label for="notes">Notes</label>';
+        $html[] = '<textarea name="notes" id="notes"></textarea>';
+        $html[] = '</div>';
+        $html[] = '<input type="hidden" id="time"/>';
+        $html[] = '<input type="hidden" id="party-size"/>';
+        $html[] = '</form>';
+        $html[] = '</div>';
     } else {
-        $html[] = '<div class="col-xs-12 mt-snj-main">' .
-            esc_html__( 'Seat Ninja API Key & Customer AuthToken is not set', 'mt-snj' ) .
-            '</div>';
+        $html[] = '<div class="col-xs-12 mt-snj-main">' . esc_html__( 'Seat Ninja API Key & Customer AuthToken is not set',
+                'mt-snj' ) . '</div>';
     }
 
     return sprintf( '<div class="%s">%s</div>',
