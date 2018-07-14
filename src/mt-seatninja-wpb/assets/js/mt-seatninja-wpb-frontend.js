@@ -2,7 +2,8 @@
     mtui_wpb_frontend = (function () {
         return {
             init                : function () {
-                var currentDate
+                var currentDate,
+                    map, marker
                 this.dateTimePicker()
                 this.partySizeSelectBox()
                 this.getRestaurantProfile()
@@ -99,6 +100,8 @@
             },
             getRestaurantProfile: function () {
 
+                var self = this
+
                 $('#restaurants-select').on('change', function () {
                     let id = $(this).val()
 
@@ -112,6 +115,18 @@
                             nonce        : mtSeatNinja.ajax_nonce
                         },
                         success: (res) => {
+
+                            if (res) {
+
+                                let location = {
+                                    lat: res.lat,
+                                    lng: res.lon
+                                }
+
+                                self.marker.setPosition(location)
+                                self.map.panTo(self.marker.getPosition());
+
+                            }
                         },
                         error  : (error) => {
                             console.log(error)
@@ -155,14 +170,23 @@
                 })
             },
             gmap                : function () {
-                var center = [37.772323, -122.214897]
-                $('#mt-snj-map').gmap3({
-                    center   : center,
-                    zoom     : 12,
-                    mapTypeId: google.maps.MapTypeId.ROADMAP
-                }).marker({
-                    position: center
+
+                var location = {
+                        lat: 37.772323,
+                        lng: -122.214897
+                    },
+                    self     = this
+
+                self.map = new google.maps.Map($('#mt-snj-map')[0], {
+                    zoom  : 13,
+                    center: location
                 })
+
+                self.marker = new google.maps.Marker({
+                    position: location,
+                    map     : self.map
+                })
+
             }
         }
     }())
