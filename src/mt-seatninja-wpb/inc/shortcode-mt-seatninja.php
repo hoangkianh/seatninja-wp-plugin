@@ -30,24 +30,30 @@ function mt_seatninja( $atts ) {
     if ( ! empty( $keys ) ) {
         $html[] = '<div class="col-xs-12 col-md-8 mt-snj-main">';
 
+        $html[] = '<div class="mt-snj-input-group">';
         $html[] = mt_seatninja_restaurant_selectbox();
+        $html[] = '</div>';
 
+        $html[] = '<div class="mt-snj-input-group">';
         $html[] = mt_seatninja_partysize_selectbox();
+        $html[] = '</div>';
 
+        $html[] = '<div class="mt-snj-input-group">';
         $html[] = mt_seatninja_date_picker();
+        $html[] = '</div>';
 
         $html[] = '<div class="mt-snj-times"></div>';
 
         $html[] = '</div>';
 
-        $html[] = '<div class="col-xs-12 col-md-4 mt-snj-details">';
+        $html[] = '<div class="col-xs-12 col-md-4 mt-snj-details mt-snj-hidden">';
         $html[] = '<div id="mt-snj-map"></div>';
         $html[] = '<div class="mt-snj-info">';
         $html[] = '<div class="row">';
         $html[] = '<div class="col-md-8">';
-        $html[] = '<p class="mt-snj-info__address"><span class="glyphicon icon-location"></span></p>';
-        $html[] = '<p class="mt-snj-info__phone"><span class="glyphicon icon-phone-outline"></span></p>';
-        $html[] = '<p class="mt-snj-info__url"><span class="glyphicon icon-link"></span></p>';
+        $html[] = '<p class="mt-snj-info__address"><i class="fa fa-map-marker"></i><span class="mt-snj-info__text"></span></p>';
+        $html[] = '<p class="mt-snj-info__phone"><i class="fa fa-phone"></i><span class="mt-snj-info__text"></span></p>';
+        $html[] = '<p class="mt-snj-info__url"><i class="fa fa-link"></i><span class="mt-snj-info__text"></span></p>';
         $html[] = '</div>';
         $html[] = '<div class="col-md-4">';
         $html[] = '<img class="mt-snj-info__logo" />';

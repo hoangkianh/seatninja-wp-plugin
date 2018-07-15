@@ -22,6 +22,8 @@ function mt_snj_get_restaurant_details() {
 
     check_ajax_referer( 'mt-seatninja-wpb', 'nonce' );
 
+    $restaurants    = mt_snj_get_restaurants();
+    $newRestaurants = array();
     $restaurantId = isset( $_REQUEST['restaurantId'] ) ? $_REQUEST['restaurantId'] : '';
 
     if ( ! $restaurantId ) {
@@ -39,13 +41,27 @@ function mt_snj_get_restaurant_details() {
         wp_send_json( array( 'error' => $response['message'] ) );
     }
 
-    wp_send_json( $response );
+    $details = $response['data'];
+
+    // Update in database
+    foreach ( $restaurants as $restaurant ) {
+
+        if ( $restaurant['id'] == $restaurantId ) {
+            $restaurant['website'] = $details['website'];
+        }
+
+        $newRestaurants[] = $restaurant;
+    }
+
+    update_option( 'mt-snj-restaurants', $newRestaurants );
+
+    wp_send_json( $details );
 }
 
 add_action( 'wp_ajax_nopriv_get_restaurant_details', 'mt_snj_get_restaurant_details' );
 add_action( 'wp_ajax_get_restaurant_details', 'mt_snj_get_restaurant_details' );
 
-function mt_snj_get_restaurant_details_from_db() {
+function mt_snj_get_restaurant_info_from_db() {
 
     $restaurants  = mt_snj_get_restaurants();
     $restaurantId = isset( $_REQUEST['restaurantId'] ) ? $_REQUEST['restaurantId'] : '';
@@ -63,37 +79,46 @@ function mt_snj_get_restaurant_details_from_db() {
     }
 }
 
-add_action( 'wp_ajax_nopriv_get_restaurant_details_from_db', 'mt_snj_get_restaurant_details_from_db' );
-add_action( 'wp_ajax_get_restaurant_details_from_db', 'mt_snj_get_restaurant_details_from_db' );
+add_action( 'wp_ajax_nopriv_get_restaurant_info_from_db', 'mt_snj_get_restaurant_info_from_db' );
+add_action( 'wp_ajax_get_restaurant_info_from_db', 'mt_snj_get_restaurant_info_from_db' );
 
 function mt_snj_get_restaurant_profile() {
 
     check_ajax_referer( 'mt-seatninja-wpb', 'nonce' );
 
-    $restaurantId = isset( $_REQUEST['restaurantId'] ) ? $_REQUEST['restaurantId'] : '';
+    $restaurants    = mt_snj_get_restaurants();
+    $newRestaurants = array();
+    $restaurantId   = isset( $_REQUEST['restaurantId'] ) ? $_REQUEST['restaurantId'] : '';
 
     if ( ! $restaurantId ) {
         wp_send_json( array( 'error' => esc_html__( 'Restaurant ID is not set', 'mt-snj' ) ) );
     }
 
-    $profile = get_option( 'mt-snj-restaurant-profile-' . $restaurantId );
+    $response = MT_SeatNinja::getDataFromApi( 'GET',
+        MT_SEATNINJA_API_URL . '/restaurant/' . $restaurantId . '/profile' );
 
-    if ( ! $profile || empty( $profile ) ) {
-
-        $response = MT_SeatNinja::getDataFromApi( 'GET',
-            MT_SEATNINJA_API_URL . '/restaurant/' . $restaurantId . '/profile' );
-
-        if ( $response == null ) {
-            wp_send_json( array( 'error' => esc_html__( 'Can\'t find this restaurant', 'mt-snj' ) ) );
-        }
-
-        if ( $response['data'] == null ) {
-            wp_send_json( array( 'error' => $response['message'] ) );
-        }
-
-        $profile = $response['data'];
-        update_option( 'mt-snj-restaurant-profile-' . $restaurantId, $profile );
+    if ( $response == null ) {
+        wp_send_json( array( 'error' => esc_html__( 'Can\'t find this restaurant', 'mt-snj' ) ) );
     }
+
+    if ( $response['data'] == null ) {
+        wp_send_json( array( 'error' => $response['message'] ) );
+    }
+
+    $profile = $response['data'];
+
+    // Update in database
+    foreach ( $restaurants as $restaurant ) {
+
+        if ( $restaurant['id'] == $restaurantId ) {
+            $restaurant['minPartySizeForReservation'] = $profile['minPartySizeForReservation'];
+            $restaurant['maxPartySizeForReservation'] = $profile['maxPartySizeForReservation'];
+        }
+
+        $newRestaurants[] = $restaurant;
+    }
+
+    update_option( 'mt-snj-restaurants', $newRestaurants );
 
     wp_send_json( $profile );
 }
@@ -129,10 +154,10 @@ function mt_snj_get_reservation_times() {
 
     check_ajax_referer( 'mt-seatninja-wpb', 'nonce' );
 
-    $result    = array();
-    $restaurantId        = isset( $_REQUEST['restaurantId'] ) ? $_REQUEST['restaurantId'] : '';
-    $partySize = isset( $_REQUEST['partySize'] ) ? $_REQUEST['partySize'] : - 1;
-    $date      = isset( $_REQUEST['date'] ) ? $_REQUEST['date'] : '';
+    $result       = array();
+    $restaurantId = isset( $_REQUEST['restaurantId'] ) ? $_REQUEST['restaurantId'] : '';
+    $partySize    = isset( $_REQUEST['partySize'] ) ? $_REQUEST['partySize'] : - 1;
+    $date         = isset( $_REQUEST['date'] ) ? $_REQUEST['date'] : '';
 
     if ( ! $restaurantId ) {
         wp_send_json( array( 'error' => esc_html__( 'Restaurant ID is not set', 'mt-snj' ) ) );

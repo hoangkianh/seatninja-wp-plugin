@@ -1,20 +1,20 @@
 (function ($) {
     mtui_wpb_frontend = (function () {
         return {
-            init                : function () {
+            init                       : function () {
                 var currentDate,
                     map,
                     marker
                 this.dateTimePicker()
                 this.partySizeSelectBox()
-                this.getRestaurantProfile()
+                this.getRestaurantApi()
                 this.bookingReservation()
 
                 if (mtSeatNinja.gmapsApiKey) {
                     this.gmap()
                 }
             },
-            formatDate          : function (date) {
+            formatDate                 : function (date) {
                 var d     = new Date(date),
                     month = '' + (d.getMonth() + 1),
                     day   = '' + d.getDate(),
@@ -29,7 +29,7 @@
 
                 return [month, day, year].join('-')
             },
-            dateTimePicker      : function () {
+            dateTimePicker             : function () {
                 var self = this
 
                 $('#datetimepicker').datetimepicker({
@@ -46,14 +46,14 @@
                     }
                 })
             },
-            partySizeSelectBox  : function () {
+            partySizeSelectBox         : function () {
                 var self = this
 
                 $('#party-size').on('change', function () {
                     self.getReservationTimes()
                 })
             },
-            getReservationTimes : function () {
+            getReservationTimes        : function () {
                 let self = this
                 let restaurantId = $('#restaurants-select').val()
                 let partySize = $('#party-size').val()
@@ -101,7 +101,7 @@
                     })
                 }
             },
-            getRestaurantProfile: function () {
+            getRestaurantApi           : function () {
 
                 var self = this
 
@@ -113,57 +113,43 @@
                         url    : mtSeatNinja.ajaxUrl,
                         timeout: 10000,
                         data   : {
-                            action      : 'get_restaurant_details_from_db',
+                            action      : 'get_restaurant_info_from_db',
                             restaurantId: restaurantId,
                             nonce       : mtSeatNinja.ajaxNonce
                         },
                         success: (res) => {
 
-                            if (res && typeof self.map !== 'undefined' && typeof self.marker !== 'undefined') {
+                            if (res) {
 
-                                let location = {
-                                    lat: res.lat,
-                                    lng: res.lon
+                                if (typeof self.map !== 'undefined' && typeof self.marker !== 'undefined') {
+
+                                    let location = {
+                                        lat: res.lat,
+                                        lng: res.lon
+                                    }
+
+                                    self.marker.setPosition(location)
+                                    self.map.panTo(self.marker.getPosition())
                                 }
 
-                                self.marker.setPosition(location)
-                                self.map.panTo(self.marker.getPosition())
+                                let address = res.address + ', ' + res.city + ', ' + res.state + ' ' + res.zip
+
+                                $('.mt-snj-info__address .mt-snj-info__text').html(address)
+                                $('.mt-snj-info__phone .mt-snj-info__text').html('<a href="tel:' + res.phoneNumber +'">' + res.phoneNumber + '</a>')
+                                $('.mt-snj-info__logo').attr('src', res.logoUrl)
+
+                                if (typeof res.website === 'undefined') {
+                                    self.getRestaurantDetailsromApi(restaurantId)
+                                } else {
+                                    $('.mt-snj-info__url .mt-snj-info__text').html('<a href="' + res.website +'">' + res.website + '</a>')
+                                }
+
+                                if (typeof res.minPartySizeForReservation === 'undefined' && typeof res.maxPartySizeForReservation === 'undefined') {
+                                    self.getRestaurantProfileFromApi(restaurantId)
+                                } else {
+                                    self.addPartySizeData(res.minPartySizeForReservation, res.maxPartySizeForReservation)
+                                }
                             }
-                        },
-                        error  : (error) => {
-                            console.log(error)
-                        }
-                    })
-
-                    $.ajax({
-                        type   : 'GET',
-                        url    : mtSeatNinja.ajaxUrl,
-                        timeout: 30000,
-                        data   : {
-                            action      : 'get_restaurant_profile',
-                            restaurantId: restaurantId,
-                            nonce       : mtSeatNinja.ajaxNonce
-                        },
-                        success: (res) => {
-
-                            let minPartySize = 1,
-                                maxPartySize = 10,
-                                $options     = '<option value="-1">---</option>'
-
-                            if (typeof res.minPartySizeForReservation !== 'undefined') {
-                                minPartySize = res.minPartySizeForReservation
-                            }
-
-                            if (typeof res.maxPartySizeForReservation !== 'undefined') {
-                                maxPartySize = res.maxPartySizeForReservation
-                            }
-
-                            for (let i = minPartySize; i <= maxPartySize; i++) {
-                                $options +=
-                                    '<option value="' + i + '">' + mtSeatNinja.partyOfText + ' ' + i + '</option>'
-                            }
-
-                            $('#party-size').html($options)
                         },
                         error  : (error) => {
                             console.log(error)
@@ -171,7 +157,74 @@
                     })
                 })
             },
-            gmap                : function () {
+            getRestaurantProfileFromApi: function (restaurantId) {
+
+                let self = this
+
+                $.ajax({
+                    type   : 'GET',
+                    url    : mtSeatNinja.ajaxUrl,
+                    timeout: 30000,
+                    data   : {
+                        action      : 'get_restaurant_profile',
+                        restaurantId: restaurantId,
+                        nonce       : mtSeatNinja.ajaxNonce
+                    },
+                    success: (res) => {
+
+                        let minPartySize = 1,
+                            maxPartySize = 10
+
+                        if (typeof res.minPartySizeForReservation !== 'undefined') {
+                            minPartySize = res.minPartySizeForReservation
+                        }
+
+                        if (typeof res.maxPartySizeForReservation !== 'undefined') {
+                            maxPartySize = res.maxPartySizeForReservation
+                        }
+
+                        self.addPartySizeData(minPartySize, maxPartySize)
+                    },
+                    error  : (error) => {
+                        console.log(error)
+                    }
+                })
+            },
+            getRestaurantDetailsromApi: function (restaurantId) {
+
+                let self = this
+
+                $.ajax({
+                    type   : 'GET',
+                    url    : mtSeatNinja.ajaxUrl,
+                    timeout: 30000,
+                    data   : {
+                        action      : 'get_restaurant_details',
+                        restaurantId: restaurantId,
+                        nonce       : mtSeatNinja.ajaxNonce
+                    },
+                    success: (res) => {
+
+                        let website = res.website
+
+                        $('.mt-snj-info__url .mt-snj-info__text').html('<a href="' + website +'">' + website + '</a>')
+                    },
+                    error  : (error) => {
+                        console.log(error)
+                    }
+                })
+            },
+            addPartySizeData           : function (minPartySize, maxPartySize) {
+
+                let $options     = '<option value="-1">---</option>'
+
+                for (let i = minPartySize; i <= maxPartySize; i++) {
+                    $options += '<option value="' + i + '">' + mtSeatNinja.partyOfText + ' ' + i + '</option>'
+                }
+
+                $('#party-size').html($options)
+            },
+            gmap                       : function () {
 
                 var location = {
                         lat: 37.772323,
@@ -190,17 +243,21 @@
                 })
 
             },
-            reservationModal    : function () {
+            reservationModal           : function () {
 
                 $('.mt-snj-times-list__link').on('click', function () {
                     $('#mt-snj-reservation-form #time').val($(this).attr('data-value'))
+                })
+
+                $('#mt-snj-reservation-form input[type="button"]').on('click', function () {
+                    $.magnificPopup.close()
                 })
 
                 $('.mt-snj-times-list__link').magnificPopup({
                     type: 'inline'
                 })
             },
-            bookingReservation  : function () {
+            bookingReservation         : function () {
 
                 let $form = $('#mt-snj-reservation-form')
 
