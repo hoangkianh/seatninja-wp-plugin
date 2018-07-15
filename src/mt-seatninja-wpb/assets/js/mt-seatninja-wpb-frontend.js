@@ -10,7 +10,7 @@
                 this.getRestaurantProfile()
                 this.bookingReservation()
 
-                if (mtSeatNinja.gmaps_api_key) {
+                if (mtSeatNinja.gmapsApiKey) {
                     this.gmap()
                 }
             },
@@ -55,21 +55,21 @@
             },
             getReservationTimes : function () {
                 let self = this
-                let restaurant_id = $('#restaurants-select').val()
+                let restaurantId = $('#restaurants-select').val()
                 let partySize = $('#party-size').val()
                 let date = $('#datetimepicker').val()
 
                 if (partySize > 0 && date) {
                     $.ajax({
                         type   : 'GET',
-                        url    : mtSeatNinja.ajax_url,
+                        url    : mtSeatNinja.ajaxUrl,
                         timeout: 30000,
                         data   : {
-                            action       : 'get_reservation_times',
-                            restaurant_id: restaurant_id,
-                            party_size   : partySize,
-                            date         : self.formatDate(date),
-                            nonce        : mtSeatNinja.ajax_nonce
+                            action      : 'get_reservation_times',
+                            restaurantId: restaurantId,
+                            partySize   : partySize,
+                            date        : self.formatDate(date),
+                            nonce       : mtSeatNinja.ajaxNonce
                         },
                         success: (res) => {
 
@@ -106,20 +106,20 @@
                 var self = this
 
                 $('#restaurants-select').on('change', function () {
-                    let id = $(this).val()
+                    let restaurantId = $(this).val()
 
                     $.ajax({
                         type   : 'GET',
-                        url    : mtSeatNinja.ajax_url,
+                        url    : mtSeatNinja.ajaxUrl,
                         timeout: 10000,
                         data   : {
-                            action       : 'get_restaurant_profile_from_db',
-                            restaurant_id: id,
-                            nonce        : mtSeatNinja.ajax_nonce
+                            action      : 'get_restaurant_details_from_db',
+                            restaurantId: restaurantId,
+                            nonce       : mtSeatNinja.ajaxNonce
                         },
                         success: (res) => {
 
-                            if (res) {
+                            if (res && typeof self.map !== 'undefined' && typeof self.marker !== 'undefined') {
 
                                 let location = {
                                     lat: res.lat,
@@ -128,7 +128,6 @@
 
                                 self.marker.setPosition(location)
                                 self.map.panTo(self.marker.getPosition())
-
                             }
                         },
                         error  : (error) => {
@@ -138,12 +137,12 @@
 
                     $.ajax({
                         type   : 'GET',
-                        url    : mtSeatNinja.ajax_url,
-                        timeout: 10000,
+                        url    : mtSeatNinja.ajaxUrl,
+                        timeout: 30000,
                         data   : {
-                            action       : 'get_restaurant_profile',
-                            restaurant_id: id,
-                            nonce        : mtSeatNinja.ajax_nonce
+                            action      : 'get_restaurant_profile',
+                            restaurantId: restaurantId,
+                            nonce       : mtSeatNinja.ajaxNonce
                         },
                         success: (res) => {
 
@@ -161,7 +160,7 @@
 
                             for (let i = minPartySize; i <= maxPartySize; i++) {
                                 $options +=
-                                    '<option value="' + i + '">' + mtSeatNinja.party_of_text + ' ' + i + '</option>'
+                                    '<option value="' + i + '">' + mtSeatNinja.partyOfText + ' ' + i + '</option>'
                             }
 
                             $('#party-size').html($options)
@@ -221,16 +220,16 @@
                         phoneNumber : $form.find('#phone').val(),
                         email       : $form.find('#email').val(),
                         notes       : $form.find('#notes').val(),
-                        nonce       : mtSeatNinja.ajax_nonce,
+                        nonce       : mtSeatNinja.ajaxNonce,
                     }
 
                     $.ajax({
                         method : 'POST',
-                        url    : mtSeatNinja.ajax_url,
+                        url    : mtSeatNinja.ajaxUrl,
                         timeout: 30000,
                         data   : data,
                         success: (res) => {
-                            console.log(res)
+                            $form.removeClass('mt-snj_loading')
                         },
                         error  : (err) => {
                             console.log(err)

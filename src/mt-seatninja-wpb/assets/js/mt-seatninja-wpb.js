@@ -30,12 +30,12 @@
 
                     $.ajax({
                         type: 'POST',
-                        url: mtSeatNinja.ajax_url,
+                        url: mtSeatNinja.ajaxUrl,
                         timeout: 10000,
                         data: {
                             action: 'mt_snj_save_settings',
-                            nonce: mtSeatNinja.ajax_nonce,
-                            snj_keys: keys
+                            nonce: mtSeatNinja.ajaxNonce,
+                            snjKeys: keys
                         },
                         success: ( res ) => {
 

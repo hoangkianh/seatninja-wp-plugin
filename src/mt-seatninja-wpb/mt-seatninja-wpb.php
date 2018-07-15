@@ -110,8 +110,8 @@ if ( ! class_exists( 'MT_SeatNinja' ) ) {
             wp_localize_script( 'mt-seatninja-wpb',
                 'mtSeatNinja',
                 array(
-                    'ajax_url'   => esc_url( admin_url( 'admin-ajax.php' ) ),
-                    'ajax_nonce' => wp_create_nonce( 'mt-seatninja-wpb' ),
+                    'ajaxUrl'   => esc_url( admin_url( 'admin-ajax.php' ) ),
+                    'ajaxNonce' => wp_create_nonce( 'mt-seatninja-wpb' ),
                 ) );
         }
 
@@ -150,10 +150,10 @@ if ( ! class_exists( 'MT_SeatNinja' ) ) {
             wp_localize_script( 'mt-seatninja-wpb',
                 'mtSeatNinja',
                 array(
-                    'ajax_url'      => esc_url( admin_url( 'admin-ajax.php' ) ),
-                    'ajax_nonce'    => wp_create_nonce( 'mt-seatninja-wpb' ),
-                    'party_of_text' => esc_html__( 'Party of', 'mt-snj' ),
-                    'gmaps_api_key' => $keys['google-api-key'],
+                    'ajaxUrl'     => esc_url( admin_url( 'admin-ajax.php' ) ),
+                    'ajaxNonce'   => wp_create_nonce( 'mt-seatninja-wpb' ),
+                    'partyOfText' => esc_html__( 'Party of', 'mt-snj' ),
+                    'gmapsApiKey' => $keys['google-api-key'],
                 ) );
 
             wp_enqueue_style( 'mt-seatninja-wpb', MT_SEATNINJA_PATH . 'assets/css/mt-seatninja-wpb-frontend.css' );
@@ -163,11 +163,11 @@ if ( ! class_exists( 'MT_SeatNinja' ) ) {
 
             check_ajax_referer( 'mt-seatninja-wpb', 'nonce' );
 
-            if ( ! isset( $_POST['snj_keys'] ) ) {
+            if ( ! isset( $_POST['snjKeys'] ) ) {
                 wp_send_json_error( 'Data is not sent' );
             }
 
-            update_option( 'mt-snj-keys', $_POST['snj_keys'] );
+            update_option( 'mt-snj-keys', $_POST['snjKeys'] );
             wp_send_json_success( 'Saved successfully' );
         }
 
@@ -197,7 +197,7 @@ if ( ! class_exists( 'MT_SeatNinja' ) ) {
                     CURLOPT_HTTP_VERSION   => CURL_HTTP_VERSION_1_1,
                     CURLOPT_CUSTOMREQUEST  => $method,
                     CURLOPT_HTTPHEADER     => $args,
-                    CURLOPT_POSTFIELDS     => http_build_query($body_params),
+                    CURLOPT_POSTFIELDS     => http_build_query( $body_params ),
                 ) );
 
             $response = curl_exec( $curl );
