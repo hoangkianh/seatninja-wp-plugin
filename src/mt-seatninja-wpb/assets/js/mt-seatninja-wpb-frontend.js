@@ -59,6 +59,8 @@
                 let partySize = $('#party-size').val()
                 let date = $('#datetimepicker').val()
 
+                $('.mt-snj-times').addClass('mt-snj-loading')
+
                 if (partySize > 0 && date) {
                     $.ajax({
                         type   : 'GET',
@@ -73,6 +75,8 @@
                         },
                         success: (res) => {
 
+                            $('.mt-snj-times').removeClass('mt-snj-loading')
+
                             let html = ''
 
                             for (let i = 0; i < res.length; i++) {
@@ -83,7 +87,7 @@
                                 html += '<ul class="row mt-snj-times-list">'
 
                                 for (let j = 0; j < times.length; j++) {
-                                    html += '<li class="col-md-3 col-xs-6 mt-snj-times-list__item">'
+                                    html += '<li class="col-xs-6 col-sm-3 mt-snj-times-list__item">'
                                     html +=
                                         '<a href="#reservation-modal" class="mt-snj-times-list__link" data-value="' + times[j].value + '">' + times[j].text + '</a>'
                                     html += '</li>'
@@ -106,7 +110,11 @@
                 var self = this
 
                 $('#restaurants-select').on('change', function () {
-                    let restaurantId = $(this).val()
+
+                    let restaurantId = $(this).val(),
+                        $inputGroup  = $('select#party-size').closest('.mt-snj-input-group')
+
+                    $inputGroup.addClass('mt-snj-loading')
 
                     $.ajax({
                         type   : 'GET',
@@ -120,6 +128,10 @@
                         success: (res) => {
 
                             if (res) {
+
+                                $('.mt-snj-details ').removeClass('mt-snj-hidden')
+
+                                $inputGroup.removeClass('mt-snj-loading')
 
                                 if (typeof self.map !== 'undefined' && typeof self.marker !== 'undefined') {
 
@@ -135,13 +147,15 @@
                                 let address = res.address + ', ' + res.city + ', ' + res.state + ' ' + res.zip
 
                                 $('.mt-snj-info__address .mt-snj-info__text').html(address)
-                                $('.mt-snj-info__phone .mt-snj-info__text').html('<a href="tel:' + res.phoneNumber +'">' + res.phoneNumber + '</a>')
+                                $('.mt-snj-info__phone .mt-snj-info__text')
+                                    .html('<a href="tel:' + res.phoneNumber + '">' + res.phoneNumber + '</a>')
                                 $('.mt-snj-info__logo').attr('src', res.logoUrl)
 
                                 if (typeof res.website === 'undefined') {
                                     self.getRestaurantDetailsromApi(restaurantId)
                                 } else {
-                                    $('.mt-snj-info__url .mt-snj-info__text').html('<a href="' + res.website +'">' + res.website + '</a>')
+                                    $('.mt-snj-info__url .mt-snj-info__text')
+                                        .html('<a href="' + res.website + '">' + res.website + '</a>')
                                 }
 
                                 if (typeof res.minPartySizeForReservation === 'undefined' && typeof res.maxPartySizeForReservation === 'undefined') {
@@ -190,7 +204,7 @@
                     }
                 })
             },
-            getRestaurantDetailsromApi: function (restaurantId) {
+            getRestaurantDetailsromApi : function (restaurantId) {
 
                 let self = this
 
@@ -207,7 +221,7 @@
 
                         let website = res.website
 
-                        $('.mt-snj-info__url .mt-snj-info__text').html('<a href="' + website +'">' + website + '</a>')
+                        $('.mt-snj-info__url .mt-snj-info__text').html('<a href="' + website + '">' + website + '</a>')
                     },
                     error  : (error) => {
                         console.log(error)
@@ -216,7 +230,7 @@
             },
             addPartySizeData           : function (minPartySize, maxPartySize) {
 
-                let $options     = '<option value="-1">---</option>'
+                let $options = '<option value="-1">---</option>'
 
                 for (let i = minPartySize; i <= maxPartySize; i++) {
                     $options += '<option value="' + i + '">' + mtSeatNinja.partyOfText + ' ' + i + '</option>'
@@ -265,7 +279,7 @@
 
                     e.preventDefault()
 
-                    $form.addClass('mt-snj_loading')
+                    $form.addClass('mt-snj-loading')
 
                     let data = {
                         action      : 'booking_reservation',
@@ -286,7 +300,28 @@
                         timeout: 30000,
                         data   : data,
                         success: (res) => {
-                            $form.removeClass('mt-snj_loading')
+                            $form.removeClass('mt-snj-loading')
+
+                            if (res.data) {
+                                $form[0].reset()
+
+                                $('#mt-snj-reservation-form').addClass('mt-snj-hidden')
+                                $('.mt-snj__message').addClass('success')
+                                $('.mt-snj__message').html('<p>Thank you! We will call back soon for you to confirm</p>')
+                            } else if (res.error) {
+
+                                let html = ''
+                                html = '<p>' + res.error.message + '</p>'
+                                html += '<ul class="mt-snj__errors">'
+
+                                res.error.messages.forEach((mes) => {
+                                    html += '<li>' + mes + '</li>'
+                                })
+                                html += ''
+                                html += '</ul>'
+
+                                $('.mt-snj-form__error').html(html)
+                            }
                         },
                         error  : (err) => {
                             console.log(err)

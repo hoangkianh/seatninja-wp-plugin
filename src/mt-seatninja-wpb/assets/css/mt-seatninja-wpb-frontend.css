@@ -1,5 +1,78 @@
+.mt-snj-main select, .mt-snj-main input {
+  width: 100%; }
+
+.mt-snj-hidden {
+  opacity: 0;
+  visibility: hidden;
+  height: 0; }
+
+.mt-snj-loading {
+  position: relative; }
+  .mt-snj-loading:before {
+    position: absolute;
+    content: url("../images/loading.svg");
+    display: block;
+    text-align: center;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+    z-index: 1; }
+  .mt-snj-loading:after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background-color: #ffffff;
+    opacity: .8; }
+
+.mt-snj-input-group {
+  position: relative;
+  margin-bottom: 20px; }
+
+.mt-snj-times {
+  position: relative; }
+
+.mt-snj-times-list {
+  list-style-type: none;
+  padding: 0; }
+
+.mt-snj-times-list__link {
+  display: inline-block;
+  color: #ffffff;
+  background-color: #282828;
+  margin-bottom: 10px;
+  padding: 5px 35px; }
+  .mt-snj-times-list__link:hover {
+    color: #ffffff;
+    background-color: #d82435; }
+  .mt-snj-times-list__link:focus {
+    outline: none;
+    color: #ffffff; }
+
+.mt-snj-section-name {
+  font-weight: 600; }
+
 #mt-snj-map {
   width: 100%;
   height: 200px; }
+
+.mfp-content {
+  max-width: 320px;
+  background-color: #ffffff;
+  padding: 30px 20px;
+  margin: 0 auto; }
+  .mfp-content .mfp-close {
+    margin: 0; }
+  @media (min-width: 768px) {
+    .mt-snj-main .mt-snj-input-group {
+      display: inline-block;
+      vertical-align: top;
+      width: 33.33%;
+      padding-right: 15px; }
+    .mfp-content {
+      max-width: 480px; } }
 
 /*# sourceMappingURL=../sourcemap/mt-seatninja-wpb-frontend.css.map */

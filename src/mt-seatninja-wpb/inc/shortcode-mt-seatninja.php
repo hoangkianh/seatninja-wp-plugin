@@ -65,7 +65,9 @@ function mt_seatninja( $atts ) {
         $html[] = '</div>';
 
         $html[] = '<div id="reservation-modal" class="mfp-hide">';
+        $html[] = '<div class="mt-snj__message"></div>';
         $html[] = '<form id="mt-snj-reservation-form">';
+        $html[] = '<div class="mt-snj-form__error"></div>';
         $html[] = '<div class="mt-snj-input-group">';
         $html[] = '<label for="first-name">First Name <mark>*</mark></label>';
         $html[] = '<input type="text" name="first-name" id="first-name" required />';
@@ -88,8 +90,8 @@ function mt_seatninja( $atts ) {
         $html[] = '</div>';
         $html[] = '<input type="hidden" id="time"/>';
         $html[] = '<div class="buttons">';
-        $html[] = '<input type="button" value="Cancel" />';
         $html[] = '<input type="submit" value="Submit" />';
+        $html[] = '<input type="button" value="Cancel" />';
         $html[] = '</div>';
         $html[] = '</form>';
         $html[] = '</div>';
