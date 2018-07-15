@@ -210,3 +210,20 @@ function mt_snj_get_reservation_times() {
 
 add_action( 'wp_ajax_nopriv_get_reservation_times', 'mt_snj_get_reservation_times' );
 add_action( 'wp_ajax_get_reservation_times', 'mt_snj_get_reservation_times' );
+
+function mt_snj_booking_reservation() {
+
+    check_ajax_referer( 'mt-seatninja-wpb', 'nonce' );
+
+    $id        = isset( $_REQUEST['restaurantId'] ) ? $_REQUEST['restaurantId'] : '';
+
+    $response = MT_SeatNinja::getDataFromApi( 'POST',
+        MT_SEATNINJA_API_URL . '/reservations/' . $id . '/reservation/unauthenticated',
+        array(),
+        $_REQUEST);
+
+    wp_send_json( $response );
+}
+
+add_action( 'wp_ajax_nopriv_booking_reservation', 'mt_snj_booking_reservation' );
+add_action( 'wp_ajax_get_booking_reservation', 'mt_snj_booking_reservation' );

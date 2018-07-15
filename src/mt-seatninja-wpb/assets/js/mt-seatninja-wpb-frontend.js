@@ -8,6 +8,7 @@
                 this.dateTimePicker()
                 this.partySizeSelectBox()
                 this.getRestaurantProfile()
+                this.bookingReservation()
 
                 if (mtSeatNinja.gmaps_api_key) {
                     this.gmap()
@@ -191,8 +192,50 @@
 
             },
             reservationModal    : function () {
+
+                $('.mt-snj-times-list__link').on('click', function () {
+                    $('#mt-snj-reservation-form #time').val($(this).attr('data-value'))
+                })
+
                 $('.mt-snj-times-list__link').magnificPopup({
-                    type : 'inline'
+                    type: 'inline'
+                })
+            },
+            bookingReservation  : function () {
+
+                let $form = $('#mt-snj-reservation-form')
+
+                $form.on('submit', function (e) {
+
+                    e.preventDefault()
+
+                    $form.addClass('mt-snj_loading')
+
+                    let data = {
+                        action      : 'booking_reservation',
+                        restaurantId: $('#restaurants-select').val(),
+                        time        : $form.find('#time').val(),
+                        partySize   : $('#party-size').val(),
+                        firstName   : $form.find('#first-name').val(),
+                        lastName    : $form.find('#last-name').val(),
+                        phoneNumber : $form.find('#phone').val(),
+                        email       : $form.find('#email').val(),
+                        notes       : $form.find('#notes').val(),
+                        nonce       : mtSeatNinja.ajax_nonce,
+                    }
+
+                    $.ajax({
+                        method : 'POST',
+                        url    : mtSeatNinja.ajax_url,
+                        timeout: 30000,
+                        data   : data,
+                        success: (res) => {
+                            console.log(res)
+                        },
+                        error  : (err) => {
+                            console.log(err)
+                        }
+                    })
                 })
             }
         }
