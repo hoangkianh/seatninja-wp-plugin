@@ -115,6 +115,7 @@
                         $inputGroup  = $('select#party-size').closest('.mt-snj-input-group')
 
                     $inputGroup.addClass('mt-snj-loading')
+                    $('.mt-snj-times').html('')
 
                     $.ajax({
                         type   : 'GET',
