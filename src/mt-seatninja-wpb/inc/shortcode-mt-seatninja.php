@@ -11,6 +11,14 @@ vc_map( array(
 add_shortcode( 'mt_seatninja', 'mt_seatninja' );
 function mt_seatninja( $atts ) {
 
+    wp_enqueue_style('datetimepicker');
+    wp_enqueue_script('datetimepicker');
+    wp_enqueue_script('google-map');
+    wp_enqueue_style('magnific-popup');
+    wp_enqueue_script('magnific-popup');
+    wp_enqueue_style('mt-seatninja-wpb');
+    wp_enqueue_script('mt-seatninja-wpb');
+
     $atts = shortcode_atts( array(), $atts, __FUNCTION__ );
 
     extract( $atts );

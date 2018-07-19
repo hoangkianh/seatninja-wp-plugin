@@ -119,29 +119,29 @@ if ( ! class_exists( 'MT_SeatNinja' ) ) {
 
             $keys = self::get_snj_keys();
 
-            wp_enqueue_style( 'datetimepicker',
+            wp_register_style( 'datetimepicker',
                 MT_SEATNINJA_PATH . 'assets/libs/datetimepicker/jquery.datetimepicker.min.css' );
-            wp_enqueue_script( 'datetimepicker',
+            wp_register_script( 'datetimepicker',
                 MT_SEATNINJA_PATH . 'assets/libs/datetimepicker/jquery.datetimepicker.full.min.js',
                 null,
                 null,
                 true );
 
-            wp_enqueue_script( 'google-map',
+            wp_register_script( 'google-map',
                 'https://maps.googleapis.com/maps/api/js?key=' . $keys['google-api-key'],
                 null,
                 null,
                 true );
 
-            wp_enqueue_style( 'magnific-popup',
+            wp_register_style( 'magnific-popup',
                 MT_SEATNINJA_PATH . 'assets/libs/magnific-popup/magnific-popup.css' );
-            wp_enqueue_script( 'magnific-popup',
+            wp_register_style( 'magnific-popup',
                 MT_SEATNINJA_PATH . 'assets/libs/magnific-popup/jquery.magnific-popup.min.js',
                 null,
                 null,
                 true );
 
-            wp_enqueue_script( 'mt-seatninja-wpb',
+            wp_register_script( 'mt-seatninja-wpb',
                 MT_SEATNINJA_PATH . 'assets/js/mt-seatninja-wpb-frontend.js',
                 null,
                 null,
@@ -156,7 +156,7 @@ if ( ! class_exists( 'MT_SeatNinja' ) ) {
                     'gmapsApiKey' => $keys['google-api-key'],
                 ) );
 
-            wp_enqueue_style( 'mt-seatninja-wpb', MT_SEATNINJA_PATH . 'assets/css/mt-seatninja-wpb-frontend.css' );
+            wp_register_style( 'mt-seatninja-wpb', MT_SEATNINJA_PATH . 'assets/css/mt-seatninja-wpb-frontend.css' );
         }
 
         public function mt_snj_save_settings() {
