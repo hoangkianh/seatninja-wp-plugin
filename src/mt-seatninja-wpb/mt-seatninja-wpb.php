@@ -135,7 +135,7 @@ if ( ! class_exists( 'MT_SeatNinja' ) ) {
 
             wp_register_style( 'magnific-popup',
                 MT_SEATNINJA_PATH . 'assets/libs/magnific-popup/magnific-popup.css' );
-            wp_register_style( 'magnific-popup',
+            wp_register_script( 'magnific-popup',
                 MT_SEATNINJA_PATH . 'assets/libs/magnific-popup/jquery.magnific-popup.min.js',
                 null,
                 null,
