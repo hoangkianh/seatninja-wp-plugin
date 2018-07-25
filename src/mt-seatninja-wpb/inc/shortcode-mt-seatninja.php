@@ -36,7 +36,7 @@ function mt_seatninja( $atts ) {
     $html[] = '<div class="row">';
 
     if ( ! empty( $keys ) ) {
-        $html[] = '<div class="col-xs-12 col-md-8 mt-snj-main">';
+        $html[] = '<div class="col-xs-12 col-md-7 col-lg-8 mt-snj-main">';
 
         $html[] = '<div class="mt-snj-input-group">';
         $html[] = mt_seatninja_restaurant_selectbox();
@@ -54,16 +54,16 @@ function mt_seatninja( $atts ) {
 
         $html[] = '</div>';
 
-        $html[] = '<div class="col-xs-12 col-md-4 mt-snj-details mt-snj-hidden">';
+        $html[] = '<div class="col-xs-12 col-md-5 col-lg-4 mt-snj-details mt-snj-hidden">';
         $html[] = '<div id="mt-snj-map"></div>';
         $html[] = '<div class="mt-snj-info">';
         $html[] = '<div class="row">';
-        $html[] = '<div class="col-md-8">';
+        $html[] = '<div class="col-sm-8">';
         $html[] = '<p class="mt-snj-info__address"><i class="fa fa-map-marker"></i><span class="mt-snj-info__text"></span></p>';
         $html[] = '<p class="mt-snj-info__phone"><i class="fa fa-phone"></i><span class="mt-snj-info__text"></span></p>';
         $html[] = '<p class="mt-snj-info__url"><i class="fa fa-link"></i><span class="mt-snj-info__text"></span></p>';
         $html[] = '</div>';
-        $html[] = '<div class="col-md-4">';
+        $html[] = '<div class="col-sm-4">';
         $html[] = '<img class="mt-snj-info__logo" />';
         $html[] = '</div>';
         $html[] = '</div>';

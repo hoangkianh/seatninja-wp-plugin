@@ -76,5 +76,8 @@
       padding-right: 15px; }
     .mfp-content {
       max-width: 480px; } }
+  @media (min-width: 992px) {
+    .mfp-content {
+      max-width: 680px; } }
 
 /*# sourceMappingURL=../sourcemap/mt-seatninja-wpb-frontend.css.map */
