@@ -4,7 +4,21 @@ vc_map( array(
     'name'        => esc_html__( 'SeatNinja', 'mt-snj' ),
     'base'        => 'mt_seatninja',
     'description' => esc_html__( 'Show a reservation form' ),
-    'params'      => array(//array()
+    'params'      => array(
+        array(
+            'group'       => esc_html__( 'General', 'mt-snj' ),
+            'type'        => 'textfield',
+            'heading'     => esc_html__( 'Extra class name', 'mt-snj' ),
+            'param_name'  => 'el_class',
+            'description' => esc_html__( 'Style particular content element differently - add a class name and refer to it in custom CSS.', 'mt-snj' ),
+        ),
+
+        array(
+            'group'      => esc_html__( 'Design Options', 'mt-snj' ),
+            'type'       => 'css_editor',
+            'heading'    => esc_html__( 'CSS box', 'mt-snj' ),
+            'param_name' => 'css',
+        ),
     ),
 ) );
 
@@ -25,8 +39,8 @@ function mt_seatninja( $atts ) {
 
     $css_class = array(
         'mt-seatninja',
-        $atts['el_class'],
-        vc_shortcode_custom_css_class( $atts['css'] ),
+        isset($atts['el_class']) ? $atts['el_class'] : '',
+        isset($atts['css']) ? vc_shortcode_custom_css_class( $atts['css'] ) : '',
     );
 
     $html = array();

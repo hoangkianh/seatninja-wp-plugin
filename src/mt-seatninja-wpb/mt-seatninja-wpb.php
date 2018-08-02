@@ -39,6 +39,7 @@ if ( ! class_exists( 'MT_SeatNinja' ) ) {
             }
 
             include_once( MT_SEATNINJA_DIR . '/inc/shortcode-mt-seatninja.php' );
+            include_once( MT_SEATNINJA_DIR . '/inc/shortcode-mt-seatninja-form.php' );
             include_once( MT_SEATNINJA_DIR . '/inc/mt-seatninja-functions.php' );
             include_once( MT_SEATNINJA_DIR . '/inc/mt-seatninja-template-functions.php' );
         }
