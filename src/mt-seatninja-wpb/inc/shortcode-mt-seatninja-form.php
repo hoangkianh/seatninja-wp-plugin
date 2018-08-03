@@ -1,0 +1,87 @@
+<?php
+
+vc_map( array(
+    'name'        => esc_html__( 'SeatNinja Form', 'mt-snj' ),
+    'base'        => 'mt_seatninja_form',
+    'description' => esc_html__( 'Show a reservation form' ),
+    'params'      => array(
+        array(
+            'group'       => esc_html__( 'General', 'mt-snj' ),
+            'type'        => 'textarea_html',
+            'heading'     => esc_html__( 'Form Text', 'mt-snj' ),
+            'param_name'  => 'text',
+        ),
+        array(
+            'group'       => esc_html__( 'General', 'mt-snj' ),
+            'type'        => 'textfield',
+            'heading'     => esc_html__( 'Extra class name', 'mt-snj' ),
+            'param_name'  => 'el_class',
+            'description' => esc_html__( 'Style particular content element differently - add a class name and refer to it in custom CSS.', 'mt-snj' ),
+        ),
+        array(
+            'group'      => esc_html__( 'Design Options', 'mt-snj' ),
+            'type'       => 'css_editor',
+            'heading'    => esc_html__( 'CSS box', 'mt-snj' ),
+            'param_name' => 'css',
+        )
+    ),
+) );
+
+add_shortcode( 'mt_seatninja_form', 'mt_seatninja_form' );
+
+function mt_seatninja_form( $atts ) {
+    wp_enqueue_style('datetimepicker');
+    wp_enqueue_script('datetimepicker');
+    wp_enqueue_script('google-map');
+    wp_enqueue_style('magnific-popup');
+    wp_enqueue_script('magnific-popup');
+    wp_enqueue_style('mt-seatninja-wpb');
+    wp_enqueue_script('mt-seatninja-wpb');
+
+    $atts = shortcode_atts( array (
+        'text' => '',
+        'el_class' => '',
+        'css' => ''
+    ), $atts, __FUNCTION__ );
+
+    extract( $atts );
+
+    $css_class = array(
+        'mt-seatninja-form',
+        $atts['el_class'],
+        vc_shortcode_custom_css_class( $atts['css'] ),
+    );
+
+    $html = array();
+    $keys = MT_SeatNinja::get_snj_keys();
+
+    $html[] = '<div class="container">';
+
+    if ( ! empty( $keys ) ) {
+        if ( $atts['text'] ) {
+            $html[] = '<div class="row">';
+            $html[] = '<div class="col-xs-12">';
+            $html[] = '<p class="mt-seatninja-form-text">' . $atts['text'] . '</p>';
+            $html[] = '</div>';
+            $html[] = '</div>';
+        }
+
+        $html[] = '<div class="row">';
+        $html[] = '<div class="col-xs-12 col-sm-6 col-md-4">';
+        $html[] = '<div class="mt-snj-form-group">
+                        <input type="text" name="mt_snj_partysize" value="" placeholder="Number of people">
+                   </div>';
+        $html[] = '</div>';
+        $html[] = '<div class="col-xs-12 col-sm-6 col-md-4">';
+        $html[] = '<div class="mt-snj-form-group">' . mt_seatninja_date_picker(false) . '</div>';
+        $html[] = '</div>';
+        $html[] = '</div>';
+    } else {
+        $html[] = esc_html__( 'Seat Ninja API Key & Customer AuthToken is not set', 'mt-snj' );
+    }
+    $html[] = '</div>';
+
+    return sprintf( '<div class="%s">%s</div>',
+        trim( implode( ' ', $css_class ) ),
+        implode( '', $html ) );
+}

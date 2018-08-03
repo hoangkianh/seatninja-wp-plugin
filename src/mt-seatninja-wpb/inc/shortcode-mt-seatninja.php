@@ -12,7 +12,6 @@ vc_map( array(
             'param_name'  => 'el_class',
             'description' => esc_html__( 'Style particular content element differently - add a class name and refer to it in custom CSS.', 'mt-snj' ),
         ),
-
         array(
             'group'      => esc_html__( 'Design Options', 'mt-snj' ),
             'type'       => 'css_editor',
@@ -24,7 +23,6 @@ vc_map( array(
 
 add_shortcode( 'mt_seatninja', 'mt_seatninja' );
 function mt_seatninja( $atts ) {
-
     wp_enqueue_style('datetimepicker');
     wp_enqueue_script('datetimepicker');
     wp_enqueue_script('google-map');
@@ -33,14 +31,17 @@ function mt_seatninja( $atts ) {
     wp_enqueue_style('mt-seatninja-wpb');
     wp_enqueue_script('mt-seatninja-wpb');
 
-    $atts = shortcode_atts( array(), $atts, __FUNCTION__ );
+    $atts = shortcode_atts( array (
+        'el_class' => '',
+        'css' => ''
+    ), $atts, __FUNCTION__ );
 
     extract( $atts );
 
     $css_class = array(
         'mt-seatninja',
-        isset($atts['el_class']) ? $atts['el_class'] : '',
-        isset($atts['css']) ? vc_shortcode_custom_css_class( $atts['css'] ) : '',
+        $atts['el_class'],
+        vc_shortcode_custom_css_class( $atts['css'] ),
     );
 
     $html = array();
@@ -82,8 +83,6 @@ function mt_seatninja( $atts ) {
         $html[] = '</div>';
         $html[] = '</div>';
         $html[] = '</div>';
-
-        $html[] = '</div>';
         $html[] = '</div>';
 
         $html[] = '<div id="reservation-modal" class="mfp-hide">';
@@ -121,6 +120,8 @@ function mt_seatninja( $atts ) {
         $html[] = '<div class="col-xs-12 mt-snj-main">' . esc_html__( 'Seat Ninja API Key & Customer AuthToken is not set',
                 'mt-snj' ) . '</div>';
     }
+
+    $html[] = '</div></div>';
 
     return sprintf( '<div class="%s">%s</div>',
         trim( implode( ' ', $css_class ) ),

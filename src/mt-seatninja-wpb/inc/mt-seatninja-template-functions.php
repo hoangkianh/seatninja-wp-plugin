@@ -1,11 +1,15 @@
 <?php
 
-function mt_seatninja_restaurant_selectbox () {
+function mt_seatninja_restaurant_selectbox ($label = true) {
 
     $html = array();
 
     $restaurants = mt_snj_get_restaurants();
-    $html[] = '<label for="restaurants-select">' . esc_html__('Select a restaurant', 'mt-snj') . '</label>';
+
+    if ( $label ) {
+        $html[] = '<label for="restaurants-select">' . esc_html__('Select a restaurant', 'mt-snj') . '</label>';
+    }
+
     $html[] = '<select id="restaurants-select">';
     $html[] = '<option id="-1">---</option>';
 
@@ -21,11 +25,14 @@ function mt_seatninja_restaurant_selectbox () {
     return implode( '', $html );
 }
 
-function mt_seatninja_partysize_selectbox () {
+function mt_seatninja_partysize_selectbox ($label = true) {
 
     $html = array();
 
-    $html[] = '<label for="party-size">' . esc_html__('Party Size', 'mt-snj') . '</label>';
+    if ( $label ) {
+        $html[] = '<label for="party-size">' . esc_html__('Party Size', 'mt-snj') . '</label>';
+    }
+
     $html[] = '<select id="party-size">';
     $html[] = '<option value="-1">---</option>';
 
@@ -34,11 +41,14 @@ function mt_seatninja_partysize_selectbox () {
     return implode( '', $html );
 }
 
-function mt_seatninja_date_picker () {
+function mt_seatninja_date_picker ($label = true) {
 
     $html = array();
 
-    $html[] = '<label for="party-size">' . esc_html__('Date', 'mt-snj') . '</label>';
+    if ( $label ) {
+        $html[] = '<label for="party-size">' . esc_html__('Date', 'mt-snj') . '</label>';
+    }
+
     $html[] = '<input id="datetimepicker" type="text" >';
 
     return implode( '', $html );
