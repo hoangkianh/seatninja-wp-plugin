@@ -37,8 +37,8 @@
                         url    : mtSeatNinja.ajaxUrl,
                         timeout: 10000,
                         data   : {
-                            action : 'mt_snj_save_settings',
-                            nonce  : mtSeatNinja.ajaxNonce
+                            action: 'mt_snj_save_settings',
+                            nonce : mtSeatNinja.ajaxNonce
                         },
                         success: (res) => {
 
@@ -70,7 +70,7 @@
             },
             clearCache: function () {
                 var $form        = $('#mt-snj-settings'),
-                    $button = $('#clear-cache'),
+                    $button      = $('#clear-cache'),
                     ajax_loading = false
 
                 $button.on('click', function (e) {
@@ -81,7 +81,7 @@
                     }
 
                     ajax_loading = true
-                    $form._addClass('loading')
+                    $form.addClass('loading')
                     $button.addClass('loading').attr('disabled', true)
 
                     $.ajax({
@@ -90,8 +90,7 @@
                         timeout: 10000,
                         data   : {
                             action : 'mt_snj_clear_cache',
-                            nonce  : mtSeatNinja.ajaxNonce,
-                            snjKeys: keys
+                            nonce  : mtSeatNinja.ajaxNonce
                         },
                         success: (res) => {
                             ajax_loading = false

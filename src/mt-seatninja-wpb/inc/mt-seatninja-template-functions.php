@@ -16,7 +16,7 @@ function mt_seatninja_restaurant_selectbox ($label = true) {
     if ( ! empty( $restaurants ) ) {
 
         foreach ( $restaurants as $restaurant ) {
-            $html[] = '<option value="' . $restaurant['id'] . '">' .  $restaurant['name'] . ' - ' . $restaurant['id'] . '</option>';
+            $html[] = '<option value="' . $restaurant['id'] . '">' .  $restaurant['name'] . '</option>';
         }
     }
 
@@ -46,10 +46,23 @@ function mt_seatninja_date_picker ($label = true) {
     $html = array();
 
     if ( $label ) {
-        $html[] = '<label for="party-size">' . esc_html__('Date', 'mt-snj') . '</label>';
+        $html[] = '<label for="datetimepicker">' . esc_html__('Date', 'mt-snj') . '</label>';
     }
 
-    $html[] = '<input id="datetimepicker" type="text" >';
+    $html[] = '<input id="datepicker" type="text" >';
+
+    return implode( '', $html );
+}
+
+function mt_seatninja_time_picker ($label = true) {
+
+    $html = array();
+
+    if ( $label ) {
+        $html[] = '<label for="timepicker">' . esc_html__('Time', 'mt-snj') . '</label>';
+    }
+
+    $html[] = '<input id="timepicker" type="text" >';
 
     return implode( '', $html );
 }

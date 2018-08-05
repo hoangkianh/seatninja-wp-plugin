@@ -5,7 +5,8 @@
                 var currentDate,
                     map,
                     marker
-                this.dateTimePicker()
+                this.datePicker()
+                this.timePicker()
                 this.partySizeSelectBox()
                 this.getRestaurantApi()
                 this.bookingReservation()
@@ -29,19 +30,44 @@
 
                 return [month, day, year].join('-')
             },
-            dateTimePicker             : function () {
+            datePicker                 : function () {
                 var self = this
 
-                $('#datetimepicker').datetimepicker({
+                $('#datepicker').datetimepicker({
                     value           : new Date(),
                     timepicker      : false,
                     scrollInput     : false,
                     format          : 'M d Y',
                     onChangeDateTime: function (e, $input) {
 
-                        if ($input.val() !== self.currentDate) {
+                        if ($input.val() !== self.currentDate && $input.closest('.mt-seatninja').length) {
                             self.currentDate = $input.val()
                             self.getReservationTimes()
+                        }
+
+                        if ($input.closest('.mt-seatninja-form').length) {
+                            let date = $input.val()
+                            let time = $('#timepicker').val()
+                            let newDate = new Date(date + ' ' + time)
+                            $('.mt-seatninja-form').find('#time').val(newDate.toISOString())
+                        }
+                    }
+                })
+            },
+            timePicker                 : function () {
+                var self = this
+
+                $('#timepicker').datetimepicker({
+                    datepicker: false,
+                    step      : 15,
+                    format    : 'h:i A',
+                    onChangeDateTime: function (e, $input) {
+
+                        if ($input.closest('.mt-seatninja-form').length) {
+                            let time = $input.val()
+                            let date = $('#datepicker').val()
+                            let newDate = new Date(date + ' ' + time)
+                            $('.mt-seatninja-form').find('#time').val(newDate.toISOString())
                         }
                     }
                 })
@@ -50,16 +76,22 @@
                 var self = this
 
                 $('#party-size').on('change', function () {
-                    self.getReservationTimes()
+                    if ($(this).closest('.mt-seatninja').length) {
+                        self.getReservationTimes()
+                    }
                 })
             },
             getReservationTimes        : function () {
                 let self = this
                 let restaurantId = $('#restaurants-select').val()
                 let partySize = $('#party-size').val()
-                let date = $('#datetimepicker').val()
+                let date = $('#datepicker').val()
 
                 $('.mt-snj-times').addClass('mt-snj-loading')
+
+                if (isNaN(restaurantId)) {
+                    return false
+                }
 
                 if (partySize > 0 && date) {
                     $.ajax({
@@ -110,6 +142,10 @@
                 var self = this
 
                 $('#restaurants-select').on('change', function () {
+
+                    if ($(this).closest('.mt-seatninja-form').length) {
+                        return
+                    }
 
                     let restaurantId = $(this).val(),
                         $inputGroup  = $('select#party-size').closest('.mt-snj-input-group')
@@ -308,7 +344,8 @@
 
                                 $('#mt-snj-reservation-form').addClass('mt-snj-hidden')
                                 $('.mt-snj__message').addClass('success')
-                                $('.mt-snj__message').html('<p>Thank you! We will call back soon for you to confirm</p>')
+                                $('.mt-snj__message')
+                                    .html('<p>Thank you! We will call back soon for you to confirm</p>')
                             } else if (res.error) {
 
                                 let html = ''
