@@ -34,6 +34,11 @@ if ( ! class_exists( 'MT_SeatNinja' ) ) {
                     array( $this, 'mt_snj_save_settings' ) );
                 add_action( 'wp_ajax_mt_snj_save_settings',
                     array( $this, 'mt_snj_save_settings' ) );
+
+                add_action( 'wp_ajax_nopriv_mt_snj_clear_cache',
+                    array( $this, 'mt_snj_clear_cache' ) );
+                add_action( 'wp_ajax_mt_snj_clear_cache',
+                    array( $this, 'mt_snj_clear_cache' ) );
             } else {
                 add_action( 'wp_enqueue_scripts', array( $this, 'frontend_enqueue_scripts' ) );
             }
@@ -230,6 +235,20 @@ if ( ! class_exists( 'MT_SeatNinja' ) ) {
             $usa_timezone = new DateTimeZone( $timezone['timeZoneId'] );
 
             return $usa_timezone;
+        }
+
+        public function mt_snj_clear_cache() {
+
+            check_ajax_referer( 'mt-seatninja-wpb', 'nonce' );
+
+            $restaurants    = mt_snj_get_restaurants();
+
+            foreach ( $restaurants as $restaurant ) {
+                delete_option( 'mt-snj-restaurant-sections-' . $restaurant['id'] );
+            }
+
+            delete_option( 'mt-snj-restaurants' );
+            wp_send_json_success( 'Clear cache successfully' );
         }
     }
 

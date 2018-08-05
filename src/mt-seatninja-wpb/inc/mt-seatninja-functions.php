@@ -11,7 +11,7 @@ function mt_snj_get_restaurants() {
 
         if ( $response ) {
             $restaurants = $response['data'];
-            update_option( 'mt-snj-restaurants', $restaurants );
+            add_option( 'mt-snj-restaurants', $restaurants );
         }
     }
 
@@ -53,7 +53,7 @@ function mt_snj_get_restaurant_details() {
         $newRestaurants[] = $restaurant;
     }
 
-    update_option( 'mt-snj-restaurants', $newRestaurants );
+    add_option( 'mt-snj-restaurants', $newRestaurants );
 
     wp_send_json( $details );
 }
@@ -118,7 +118,7 @@ function mt_snj_get_restaurant_profile() {
         $newRestaurants[] = $restaurant;
     }
 
-    update_option( 'mt-snj-restaurants', $newRestaurants );
+    add_option( 'mt-snj-restaurants', $newRestaurants );
 
     wp_send_json( $profile );
 }
@@ -144,7 +144,7 @@ function mt_snj_get_sections( $restaurant_id ) {
         }
 
         $sections = $response['data'];
-        update_option( 'mt-snj-restaurant-sections-' . $restaurant_id, $sections );
+        add_option( 'mt-snj-restaurant-sections-' . $restaurant_id, $sections );
     }
 
     return $sections;

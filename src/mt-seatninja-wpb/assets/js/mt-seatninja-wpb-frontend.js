@@ -10,7 +10,7 @@
                 this.getRestaurantApi()
                 this.bookingReservation()
 
-                if (mtSeatNinja.gmapsApiKey) {
+                if (mtSeatNinja.gmapsApiKey && $('#mt-snj-map').length) {
                     this.gmap()
                 }
             },

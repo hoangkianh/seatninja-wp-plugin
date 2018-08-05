@@ -45,6 +45,7 @@ $keys = MT_SeatNinja::get_snj_keys();
           </table>
           <button type="submit" name="submit" id="submit-btn" class="button button-primary">Save Changes
           </button>
+          <button type="button" id="clear-cache" class="button">Clear Cache</button>
         </form>
       </div>
     </div>
