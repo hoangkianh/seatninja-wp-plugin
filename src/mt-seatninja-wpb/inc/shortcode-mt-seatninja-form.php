@@ -58,6 +58,7 @@ function mt_seatninja_form( $atts ) {
     $keys = MT_SeatNinja::get_snj_keys();
 
     $html[] = '<form class="mt-snj-reservation-form">';
+    $html[] = '<div class="mt-snj-form__error"></div>';
     $html[] = '<div class="container">';
 
     if ( ! empty( $keys ) ) {
@@ -90,7 +91,7 @@ function mt_seatninja_form( $atts ) {
 
         $html[] = '<div class="row">';
         $html[] = '<div class="col-xs-12 col-sm-6 col-md-3 mt-snj-form-group">';
-        $html[] = '<input type="text" name="first-name" id="name" required placeholder="' . esc_html( 'First Name', 'mt-snj' ) . '" />';
+        $html[] = '<input type="text" name="first-name" id="first-name" required placeholder="' . esc_html( 'First Name', 'mt-snj' ) . '" />';
         $html[] = '</div>';
         $html[] = '<div class="col-xs-12 col-sm-6 col-md-3 mt-snj-form-group">';
         $html[] = '<input type="text" name="last-name" id="name" required placeholder="' . esc_html( 'Last Name', 'mt-snj' ) . '" />';

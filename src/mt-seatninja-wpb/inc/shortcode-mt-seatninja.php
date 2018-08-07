@@ -87,7 +87,7 @@ function mt_seatninja( $atts ) {
 
         $html[] = '<div id="reservation-modal" class="mfp-hide">';
         $html[] = '<div class="mt-snj__message"></div>';
-        $html[] = '<form id="mt-snj-reservation-form">';
+        $html[] = '<form class="mt-snj-reservation-form">';
         $html[] = '<div class="mt-snj-form__error"></div>';
         $html[] = '<div class="mt-snj-input-group">';
         $html[] = '<label for="first-name">First Name <mark>*</mark></label>';

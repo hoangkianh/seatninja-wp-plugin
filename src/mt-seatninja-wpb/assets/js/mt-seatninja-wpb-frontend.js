@@ -58,9 +58,9 @@
                 var self = this
 
                 $('#timepicker').datetimepicker({
-                    datepicker: false,
-                    step      : 15,
-                    format    : 'h:i A',
+                    datepicker : false,
+                    step       : 15,
+                    format     : 'H:i',
                     onChangeDateTime: function (e, $input) {
 
                         if ($input.closest('.mt-seatninja-form').length) {
@@ -297,10 +297,10 @@
             reservationModal           : function () {
 
                 $('.mt-snj-times-list__link').on('click', function () {
-                    $('#mt-snj-reservation-form #time').val($(this).attr('data-value'))
+                    $('.mt-snj-reservation-form #time').val($(this).attr('data-value'))
                 })
 
-                $('#mt-snj-reservation-form input[type="button"]').on('click', function () {
+                $('.mt-snj-reservation-form input[type="button"]').on('click', function () {
                     $.magnificPopup.close()
                 })
 
@@ -310,7 +310,7 @@
             },
             bookingReservation         : function () {
 
-                let $form = $('#mt-snj-reservation-form')
+                let $form = $('.mt-snj-reservation-form')
 
                 $form.on('submit', function (e) {
 
@@ -340,12 +340,22 @@
                             $form.removeClass('mt-snj-loading')
 
                             if (res.data) {
-                                $form[0].reset()
 
-                                $('#mt-snj-reservation-form').addClass('mt-snj-hidden')
+                                if ($form.closest('#reservation-modal').length) {
+                                    $form.addClass('mt-snj-hidden')
+                                }
+
+                                let message = '<p>Thank you! We will call back soon for you to confirm</p>'
+                                message += '<p>Here is the reservation information:</p>'
+                                message += 'Restaurant: ' + $("#restaurants-select option:selected").text() + '<br/>'
+                                message += 'Number of people: ' + data.partySize + '<br/>'
+                                message += 'Time: ' + new Date(data.time) + '<br/>'
+                                message += 'Name: ' + data.firstName + ' ' + data.lastName + '<br/>'
+                                message += 'Phone Number: ' + data.phoneNumber + '<br/>'
+                                message += 'Email: ' + data.email + '<br/>'
                                 $('.mt-snj__message').addClass('success')
-                                $('.mt-snj__message')
-                                    .html('<p>Thank you! We will call back soon for you to confirm</p>')
+                                $('.mt-snj__message').html(message)
+                                $form[0].reset()
                             } else if (res.error) {
 
                                 let html = ''
