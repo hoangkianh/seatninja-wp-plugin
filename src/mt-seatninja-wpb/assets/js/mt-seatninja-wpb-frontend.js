@@ -338,6 +338,8 @@
                         data   : data,
                         success: (res) => {
                             $form.removeClass('mt-snj-loading')
+                            $('.mt-snj__message').html('')
+                            $('.mt-snj-form__error').html('')
 
                             if (res.data) {
 
@@ -347,14 +349,25 @@
 
                                 let message = '<p>Thank you! We will call back soon for you to confirm</p>'
                                 message += '<p>Here is the reservation information:</p>'
-                                message += 'Restaurant: ' + $("#restaurants-select option:selected").text() + '<br/>'
-                                message += 'Number of people: ' + data.partySize + '<br/>'
-                                message += 'Time: ' + new Date(data.time) + '<br/>'
-                                message += 'Name: ' + data.firstName + ' ' + data.lastName + '<br/>'
-                                message += 'Phone Number: ' + data.phoneNumber + '<br/>'
-                                message += 'Email: ' + data.email + '<br/>'
-                                $('.mt-snj__message').addClass('success')
+                                message += 'Restaurant: <strong>' + $("#restaurants-select option:selected").text() + '<br/></strong>'
+                                message += 'Number of people: <strong>' + data.partySize + '<br/></strong>'
+                                message += 'Time: <strong>' + $('#datepicker').val() + ' ' + $('#timepicker').val() + '<br/></strong>'
+                                message += 'Name: <strong>' + data.firstName + ' ' + data.lastName + '<br/></strong>'
+                                message += 'Phone Number: <strong>' + data.phoneNumber + '<br/></strong>'
+                                message += 'Email: <strong>' + data.email + '</strong>'
+
                                 $('.mt-snj__message').html(message)
+
+                                if ($form.closest('#reservation-modal').length) {
+                                    $('.mt-snj__message').addClass('success')
+                                } else {
+                                    $.magnificPopup.open({
+                                        items: {
+                                            src: '.mt-snj__message',
+                                            type: 'inline'
+                                        }
+                                    });
+                                }
                                 $form[0].reset()
                             } else if (res.error) {
 
@@ -362,9 +375,12 @@
                                 html = '<p>' + res.error.message + '</p>'
                                 html += '<ul class="mt-snj__errors">'
 
-                                res.error.messages.forEach((mes) => {
-                                    html += '<li>' + mes + '</li>'
-                                })
+                                if (res.error.messages !== null) {
+                                    res.error.messages.forEach((mes) => {
+                                        html += '<li>' + mes + '</li>'
+                                    })
+                                }
+
                                 html += ''
                                 html += '</ul>'
 

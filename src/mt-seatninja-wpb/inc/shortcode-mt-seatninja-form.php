@@ -58,6 +58,7 @@ function mt_seatninja_form( $atts ) {
     $keys = MT_SeatNinja::get_snj_keys();
 
     $html[] = '<form class="mt-snj-reservation-form">';
+    $html[] = '<div class="mt-snj__message"></div>';
     $html[] = '<div class="mt-snj-form__error"></div>';
     $html[] = '<div class="container">';
 
@@ -94,7 +95,7 @@ function mt_seatninja_form( $atts ) {
         $html[] = '<input type="text" name="first-name" id="first-name" required placeholder="' . esc_html( 'First Name', 'mt-snj' ) . '" />';
         $html[] = '</div>';
         $html[] = '<div class="col-xs-12 col-sm-6 col-md-3 mt-snj-form-group">';
-        $html[] = '<input type="text" name="last-name" id="name" required placeholder="' . esc_html( 'Last Name', 'mt-snj' ) . '" />';
+        $html[] = '<input type="text" name="last-name" id="last-name" required placeholder="' . esc_html( 'Last Name', 'mt-snj' ) . '" />';
         $html[] = '</div>';
         $html[] = '<div class="col-xs-12 col-sm-6 col-md-3 mt-snj-form-group">';
         $html[] = '<input type="text" name="phone" id="phone" required placeholder="' . esc_html( 'Phone Number',
@@ -111,7 +112,7 @@ function mt_seatninja_form( $atts ) {
         $html[] = '</div>';
 
         $html[] = '<div class="buttons">';
-        $html[] = '<input type="submit" value="Find a table" />';
+        $html[] = '<input type="submit" value="Book a table" />';
         $html[] = '<input type="button" value="Reset" />';
         $html[] = '</div>';
     } else {
