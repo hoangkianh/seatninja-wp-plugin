@@ -77,7 +77,7 @@ function mt_seatninja_form( $atts ) {
         $html[]  = '</div>';
         $html[]  = '<div class="col-xs-12 col-sm-6 col-md-3">';
         $html[]  = '<div class="mt-snj-form-group">';
-        $html [] = '<input type="text" id="party-size" value="" placeholder="' . esc_html( 'Number of people',
+        $html [] = '<input type="number" id="party-size" value="" placeholder="' . esc_html( 'Number of people',
                 'mt-snj' ) . '">';
         $html [] = '</div>';
         $html[]  = '</div>';

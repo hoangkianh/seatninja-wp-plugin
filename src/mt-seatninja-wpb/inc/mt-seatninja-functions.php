@@ -252,3 +252,16 @@ function mt_snj_booking_reservation() {
 
 add_action( 'wp_ajax_nopriv_booking_reservation', 'mt_snj_booking_reservation' );
 add_action( 'wp_ajax_booking_reservation', 'mt_snj_booking_reservation' );
+
+function mt_snj_get_restaurants_for_vc() {
+
+    $restaurants = mt_snj_get_restaurants();
+    $restaurants_vc = array();
+
+    foreach ( $restaurants as $restaurant ) {
+        $key = $restaurant['name'] . ' - ' . $restaurant['id'];
+        $restaurants_vc[$key] = $restaurant['id'];
+    }
+
+    return $restaurants_vc;
+}

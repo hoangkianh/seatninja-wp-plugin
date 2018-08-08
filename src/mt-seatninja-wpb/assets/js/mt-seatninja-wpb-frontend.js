@@ -7,7 +7,7 @@
                     marker
                 this.datePicker()
                 this.timePicker()
-                this.partySizeSelectBox()
+                this.partySizeEvent()
                 this.getRestaurantApi()
                 this.bookingReservation()
 
@@ -72,7 +72,7 @@
                     }
                 })
             },
-            partySizeSelectBox         : function () {
+            partySizeEvent         : function () {
                 var self = this
 
                 $('#party-size').on('change', function () {
@@ -89,7 +89,8 @@
 
                 $('.mt-snj-times').addClass('mt-snj-loading')
 
-                if (isNaN(restaurantId)) {
+                if (isNaN(restaurantId) || partySize < 1) {
+                    $('.mt-snj-times').removeClass('mt-snj-loading')
                     return false
                 }
 
@@ -198,8 +199,9 @@
                                 if (typeof res.minPartySizeForReservation === 'undefined' && typeof res.maxPartySizeForReservation === 'undefined') {
                                     self.getRestaurantProfileFromApi(restaurantId)
                                 } else {
-                                    self.addPartySizeData(res.minPartySizeForReservation, res.maxPartySizeForReservation)
+                                    // self.addPartySizeData(res.minPartySizeForReservation, res.maxPartySizeForReservation)
                                 }
+                                self.getReservationTimes()
                             }
                         },
                         error  : (error) => {
@@ -233,8 +235,7 @@
                         if (typeof res.maxPartySizeForReservation !== 'undefined') {
                             maxPartySize = res.maxPartySizeForReservation
                         }
-
-                        self.addPartySizeData(minPartySize, maxPartySize)
+                        // self.addPartySizeData(minPartySize, maxPartySize)
                     },
                     error  : (error) => {
                         console.log(error)

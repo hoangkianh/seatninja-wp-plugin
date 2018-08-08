@@ -7,6 +7,25 @@ vc_map( array(
     'params'      => array(
         array(
             'group'       => esc_html__( 'General', 'mt-snj' ),
+            'type'        => 'checkbox',
+            'param_name'  => 'show_all',
+            'value'       => array(
+                esc_html__( 'Show all restaurants?', 'mt-snj' ) => 'yes'
+            )
+        ),
+        array(
+            'group'       => esc_html__( 'General', 'mt-snj' ),
+            'type'        => 'dropdown',
+            'heading'     => esc_html__( 'Select a restaurant', 'mt-snj' ),
+            'param_name'  => 'restaurant_id',
+            'value'       => mt_snj_get_restaurants_for_vc(),
+            'dependency' => array(
+                'element'   => 'show_all',
+                'value_not_equal_to' => 'yes'
+            )
+        ),
+        array(
+            'group'       => esc_html__( 'General', 'mt-snj' ),
             'type'        => 'textfield',
             'heading'     => esc_html__( 'Extra class name', 'mt-snj' ),
             'param_name'  => 'el_class',
@@ -32,6 +51,8 @@ function mt_seatninja( $atts ) {
     wp_enqueue_script('mt-seatninja-wpb');
 
     $atts = shortcode_atts( array (
+        'show_all' => '',
+        'restaurant_id' => '',
         'el_class' => '',
         'css' => ''
     ), $atts, __FUNCTION__ );
@@ -46,28 +67,35 @@ function mt_seatninja( $atts ) {
 
     $html = array();
     $keys = MT_SeatNinja::get_snj_keys();
+    $show_all = isset($atts['show_all']) && $atts['show_all'] == 'yes';
 
     $html[] = '<div class="container">';
     $html[] = '<div class="row">';
 
     if ( ! empty( $keys ) ) {
         $html[] = '<div class="col-xs-12 col-md-7 col-lg-8 mt-snj-main">';
+        $html[] = '<div class="row">';
 
-        $html[] = '<div class="mt-snj-input-group">';
-        $html[] = mt_seatninja_restaurant_selectbox();
+        if ($show_all) {
+            $html[] = '<div class="col-xs-12 col-sm-6 col-md-3">';
+            $html[] = mt_seatninja_restaurant_selectbox();
+            $html[] = '</div>';
+        } elseif(isset($atts['restaurant_id'])) {
+            $html[] = '<input id="restaurants-select" type="hidden" value="' . $atts['restaurant_id'] . '" />';
+        }
+
+        $html[] = '<div class="col-xs-12 col-sm-6' . ($show_all ? 'col-md-3' : '') . '">';
+        $html[] = '<label for="party-size">' . esc_html__('Number of people', 'mt-snj') . '</label>';
+        $html [] = '<input type="number" id="party-size" value="">';
         $html[] = '</div>';
 
-        $html[] = '<div class="mt-snj-input-group">';
-        $html[] = mt_seatninja_partysize_selectbox();
-        $html[] = '</div>';
-
-        $html[] = '<div class="mt-snj-input-group">';
+        $html[] = '<div class="col-xs-12 col-sm-6' . ($show_all ? 'col-md-3' : '') . '">';
         $html[] = mt_seatninja_date_picker();
         $html[] = '</div>';
 
-        $html[] = '<div class="mt-snj-times"></div>';
+        $html[] = '<div class="col-xs-12 mt-snj-times"></div>';
 
-        $html[] = '</div>';
+        $html[] = '</div></div>';
 
         $html[] = '<div class="col-xs-12 col-md-5 col-lg-4 mt-snj-details mt-snj-hidden">';
         $html[] = '<div id="mt-snj-map"></div>';
