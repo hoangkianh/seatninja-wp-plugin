@@ -47,7 +47,7 @@
 
                         if ($input.closest('.mt-seatninja-form').length) {
                             let date = $input.val()
-                            let time = $('.timeepicker').val()
+                            let time = $('.timepicker').val()
                             let newDate = new Date(date + ' ' + time)
                             $('.mt-seatninja-form').find('#time').val(newDate.toISOString())
                         }
@@ -57,7 +57,8 @@
             timePicker                 : function () {
                 var self = this
 
-                $('.timeepicker').datetimepicker({
+                $('.timepicker').datetimepicker({
+                    value           : new Date(),
                     datepicker      : false,
                     step            : 15,
                     format          : 'H:i',
@@ -78,10 +79,7 @@
                 $('.party-size').on('change', function () {
 
                     if (parseInt($(this).val()) < 1) {
-                        $(this).next('.mt-snj-validate').addClass('invalid')
                         $('.mt-snj-times').html('')
-                    } else {
-                        $(this).next('.mt-snj-validate').removeClass('invalid')
                     }
 
                     if ($(this).closest('.mt-seatninja').length) {
@@ -294,6 +292,7 @@
                 $('.mt-snj-times-list__link').on('click', function () {
                     $('.mt-snj-reservation-form').removeClass('mt-snj-hidden')
                     $('.mt-snj-reservation-form #time').val($(this).attr('data-value'))
+                    $('.mt-snj-reservation-form #time-text').val($(this).text())
                 })
 
                 $('.mt-snj-reservation-form input[type="button"]').on('click', function () {
@@ -346,14 +345,15 @@
                                 let restaurantName = $('.mt-seatninja').hasClass('mt-seatninja--single')
                                     ?  $('.restaurant-name').val() : $('.restaurant-id option:selected').text()
 
+                                let time = $form.find('#time-text').length ? $('#time-text').val() : $('.timepicker').val()
+
                                 let message = '<p>Thank you! We will call back soon for you to confirm</p>'
                                 message += '<p>Here is the reservation information:</p>'
                                 message +=
                                     'Restaurant: <strong>' + restaurantName + '</strong><br/>'
                                 message += 'Number of people: <strong>' + data.partySize + '</strong><br/>'
                                 message +=
-                                    'Time: <strong>' + $('.datepicker').val() + ' ' + $('.timeepicker')
-                                                         .val() + '</strong><br/>'
+                                    'Time: <strong>' + $('.datepicker').val() + ' ' + time + '</strong><br/>'
                                 message += 'Name: <strong>' + data.firstName + ' ' + data.lastName + '</strong><br/>'
                                 message += 'Phone Number: <strong>' + data.phoneNumber + '</strong><br/>'
                                 message += 'Email: <strong>' + data.email + '</strong>'

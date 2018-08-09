@@ -121,16 +121,11 @@
 }
 
 .mt-snj-reservation-form {
+  input[type="submit"] {
+    width: 100%;
+  }
 }
 
-.mt-snj-validate {
-  opacity: 0;
-  visibility: hidden;
-  margin: 0;
-  transition: all .5 ease;
-
-  &.invalid {
-    opacity: 1;
-    visibility: visible;
-  }
+.mt-snj-form-group {
+  margin-bottom: 30px;
 }

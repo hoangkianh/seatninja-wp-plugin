@@ -16,13 +16,14 @@ vc_map( array(
         array(
             'group'      => esc_html__( 'General', 'mt-snj' ),
             'type'       => 'dropdown',
-            'heading'    => esc_html__( 'Select a restaurant', 'mt-snj' ),
+            'heading'    => esc_html__( 'Restaurant', 'mt-snj' ),
             'param_name' => 'restaurant_id',
             'value'      => mt_snj_get_restaurants_for_vc(),
             'dependency' => array(
                 'element'            => 'show_all',
                 'value_not_equal_to' => 'yes',
             ),
+            'admin_label' => true
         ),
         array(
             'group'      => esc_html__( 'General', 'mt-snj' ),
@@ -107,7 +108,6 @@ function mt_seatninja( $atts ) {
         $html[]  = '<div class="col-xs-12 col-sm-6' . ( $show_all ? 'col-md-3' : '' ) . '">';
         $html[]  = '<label for="party-size">' . esc_html__( 'Number of people', 'mt-snj' ) . '</label>';
         $html [] = '<input type="number" min="1" class="party-size" value="">';
-        $html[]  = '<p class="mt-snj-validate">' . esc_html__( 'Must be at least 1', 'mt-snj' ) . '</p>';
         $html[]  = '</div>';
 
         $html[] = '<div class="col-xs-12 col-sm-6' . ( $show_all ? 'col-md-3' : '' ) . '">';
@@ -163,6 +163,10 @@ function mt_seatninja( $atts ) {
         $html[] = '<textarea name="notes" class="notes"></textarea>';
         $html[] = '</div>';
         $html[] = '<input type="hidden" id="time"/>';
+        
+        if (!$show_all) {
+            $html[] = '<input type="hidden" id="time-text"/>';
+        }
         $html[] = '<div class="buttons">';
         $html[] = '<input type="submit" value="Submit" />';
         $html[] = '<input type="button" value="Cancel" />';

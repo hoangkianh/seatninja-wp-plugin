@@ -73,13 +73,14 @@ function mt_seatninja_form( $atts ) {
 
         $html[]  = '<div class="row">';
         $html[]  = '<div class="col-xs-12 col-sm-6 col-md-3">';
+        $html[]  = '<div class="mt-snj-form-group">';
         $html[]  = mt_seatninja_restaurant_selectbox(false);
+        $html[]  = '</div>';
         $html[]  = '</div>';
         $html[]  = '<div class="col-xs-12 col-sm-6 col-md-3">';
         $html[]  = '<div class="mt-snj-form-group">';
         $html [] = '<input type="number" min="1" class="party-size" value="" placeholder="' . esc_html( 'Number of people',
                 'mt-snj' ) . '">';
-        $html[] = '<p class="mt-snj-validate">' . esc_html__('Must be at least 1', 'mt-snj') . '</p>';
         $html [] = '</div>';
         $html[]  = '</div>';
         $html[]  = '<div class="col-xs-12 col-sm-6 col-md-3">';
@@ -108,13 +109,15 @@ function mt_seatninja_form( $atts ) {
         $html[] = '</div>';
 
         $html[] = '<div class="col-xs-12">';
+        $html[]  = '<div class="mt-snj-form-group">';
         $html[] = '<textarea name="notes" class="notes" placeholder="' . esc_html( 'Add special request (Optional)',
                 'mt-snj' ) . '"></textarea>';
         $html[] = '</div>';
+        $html[] = '</div>';
 
-        $html[] = '<div class="buttons">';
+        $html[] = '<div class="col-xs-12 buttons">';
         $html[] = '<input type="submit" value="Book a table" />';
-        $html[] = '<input type="button" value="Reset" />';
+        $html[] = '</div>';
         $html[] = '</div>';
     } else {
         $html[] = esc_html__( 'Seat Ninja API Key & Customer AuthToken is not set', 'mt-snj' );

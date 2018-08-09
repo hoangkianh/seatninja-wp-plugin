@@ -11,7 +11,12 @@ function mt_seatninja_restaurant_selectbox ($label = true) {
     }
 
     $html[] = '<select class="restaurant-id">';
-    $html[] = '<option id="-1">---</option>';
+
+    if ( $label ) {
+        $html[] = '<option id="-1">---</option>';
+    } else {
+        $html[] = '<option id="-1">' . esc_html__('Select a restaurant', 'mt-snj') . '</option>';
+    }
 
     if ( ! empty( $restaurants ) ) {
 
@@ -62,7 +67,7 @@ function mt_seatninja_time_picker ($label = true) {
         $html[] = '<label for="timepicker">' . esc_html__('Time', 'mt-snj') . '</label>';
     }
 
-    $html[] = '<input class="timeepicker" type="text" >';
+    $html[] = '<input class="timepicker" type="text" >';
 
     return implode( '', $html );
 }
