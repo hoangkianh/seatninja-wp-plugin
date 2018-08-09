@@ -89,7 +89,7 @@
   font-weight: 600;
 }
 
-#restaurants-select {
+.restaurant-id {
   width: 100%;
 }
 
@@ -121,4 +121,16 @@
 }
 
 .mt-snj-reservation-form {
+}
+
+.mt-snj-validate {
+  opacity: 0;
+  visibility: hidden;
+  margin: 0;
+  transition: all .5 ease;
+
+  &.invalid {
+    opacity: 1;
+    visibility: visible;
+  }
 }

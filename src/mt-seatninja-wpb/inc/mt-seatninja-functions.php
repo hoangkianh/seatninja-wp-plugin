@@ -111,14 +111,13 @@ function mt_snj_get_restaurant_profile() {
     foreach ( $restaurants as $restaurant ) {
 
         if ( $restaurant['id'] == $restaurantId ) {
-            $restaurant['minPartySizeForReservation'] = $profile['minPartySizeForReservation'];
-            $restaurant['maxPartySizeForReservation'] = $profile['maxPartySizeForReservation'];
+            $restaurant['name'] = $profile['name'];
         }
 
         $newRestaurants[] = $restaurant;
     }
 
-    add_option( 'mt-snj-restaurants', $newRestaurants );
+    update_option( 'mt-snj-restaurants', $newRestaurants );
 
     wp_send_json( $profile );
 }

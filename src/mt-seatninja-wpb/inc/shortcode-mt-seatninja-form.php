@@ -77,8 +77,9 @@ function mt_seatninja_form( $atts ) {
         $html[]  = '</div>';
         $html[]  = '<div class="col-xs-12 col-sm-6 col-md-3">';
         $html[]  = '<div class="mt-snj-form-group">';
-        $html [] = '<input type="number" id="party-size" value="" placeholder="' . esc_html( 'Number of people',
+        $html [] = '<input type="number" min="1" class="party-size" value="" placeholder="' . esc_html( 'Number of people',
                 'mt-snj' ) . '">';
+        $html[] = '<p class="mt-snj-validate">' . esc_html__('Must be at least 1', 'mt-snj') . '</p>';
         $html [] = '</div>';
         $html[]  = '</div>';
         $html[]  = '<div class="col-xs-12 col-sm-6 col-md-3">';
@@ -92,22 +93,22 @@ function mt_seatninja_form( $atts ) {
 
         $html[] = '<div class="row">';
         $html[] = '<div class="col-xs-12 col-sm-6 col-md-3 mt-snj-form-group">';
-        $html[] = '<input type="text" name="first-name" id="first-name" required placeholder="' . esc_html( 'First Name', 'mt-snj' ) . '" />';
+        $html[] = '<input type="text" name="first-name" class="first-name" required placeholder="' . esc_html( 'First Name', 'mt-snj' ) . '" />';
         $html[] = '</div>';
         $html[] = '<div class="col-xs-12 col-sm-6 col-md-3 mt-snj-form-group">';
-        $html[] = '<input type="text" name="last-name" id="last-name" required placeholder="' . esc_html( 'Last Name', 'mt-snj' ) . '" />';
+        $html[] = '<input type="text" name="last-name" class="last-name" required placeholder="' . esc_html( 'Last Name', 'mt-snj' ) . '" />';
         $html[] = '</div>';
         $html[] = '<div class="col-xs-12 col-sm-6 col-md-3 mt-snj-form-group">';
-        $html[] = '<input type="text" name="phone" id="phone" required placeholder="' . esc_html( 'Phone Number',
+        $html[] = '<input type="text" name="phone" class="phone" required placeholder="' . esc_html( 'Phone Number',
                 'mt-snj' ) . '" />';
         $html[] = '</div>';
         $html[] = '<div class="col-xs-12 col-sm-6 col-md-3 mt-snj-form-group">';
-        $html[] = '<input type="email" name="email" id="email" required placeholder="' . esc_html( 'Email',
+        $html[] = '<input type="email" name="email" class="email" required placeholder="' . esc_html( 'Email',
                 'mt-snj' ) . '" />';
         $html[] = '</div>';
 
         $html[] = '<div class="col-xs-12">';
-        $html[] = '<textarea name="notes" id="notes" placeholder="' . esc_html( 'Add special request (Optional)',
+        $html[] = '<textarea name="notes" class="notes" placeholder="' . esc_html( 'Add special request (Optional)',
                 'mt-snj' ) . '"></textarea>';
         $html[] = '</div>';
 

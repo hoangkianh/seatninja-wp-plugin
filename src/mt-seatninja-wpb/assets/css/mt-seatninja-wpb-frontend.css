@@ -57,7 +57,7 @@
 .mt-snj-section-name {
   font-weight: 600; }
 
-#restaurants-select {
+.restaurant-id {
   width: 100%; }
 
 #mt-snj-map {
@@ -71,6 +71,16 @@
   margin: 0 auto; }
   .mfp-content .mfp-close {
     margin: 0; }
+
+.mt-snj-validate {
+  opacity: 0;
+  visibility: hidden;
+  margin: 0;
+  -webkit-transition: all .5 ease;
+  transition: all .5 ease; }
+  .mt-snj-validate.invalid {
+    opacity: 1;
+    visibility: visible; }
   @media (min-width: 768px) {
     .mt-snj-main .mt-snj-input-group {
       display: inline-block;
