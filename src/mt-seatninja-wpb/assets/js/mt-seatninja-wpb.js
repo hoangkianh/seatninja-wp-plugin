@@ -38,7 +38,8 @@
                         timeout: 10000,
                         data   : {
                             action: 'mt_snj_save_settings',
-                            nonce : mtSeatNinja.ajaxNonce
+                            nonce : mtSeatNinja.ajaxNonce,
+                            snjKeys: keys
                         },
                         success: (res) => {
 

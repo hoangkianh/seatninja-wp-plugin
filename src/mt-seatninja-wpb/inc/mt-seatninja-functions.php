@@ -258,8 +258,8 @@ function mt_snj_get_restaurants_for_vc() {
     $restaurants_vc = array();
 
     foreach ( $restaurants as $restaurant ) {
-        $key = $restaurant['name'] . ' - ' . $restaurant['id'];
-        $restaurants_vc[$key] = $restaurant['id'];
+        $key                    = $restaurant['name'] . ' - ' . $restaurant['id'];
+        $restaurants_vc[ $key ] = $restaurant['id'];
     }
 
     return $restaurants_vc;

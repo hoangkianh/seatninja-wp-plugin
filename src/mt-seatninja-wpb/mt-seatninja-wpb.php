@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
-define( 'MT_SEATNINJA_API_URL', 'https://sandbox.seatninja.com' );
+define( 'MT_SEATNINJA_API_URL', 'https://api.seatninja.com' );
 define( 'MT_SEATNINJA_PATH', plugin_dir_url( __FILE__ ) );
 define( 'MT_SEATNINJA_DIR', dirname( __FILE__ ) );
 
@@ -84,6 +84,13 @@ if ( ! class_exists( 'MT_SeatNinja' ) ) {
                 'dashicons-carrot' );
 
             add_submenu_page( 'mt-snj-general',
+                esc_html__( 'Restaurants', 'mt-snj' ),
+                esc_html__( 'Restaurants', 'mt-snj' ),
+                $capability,
+                'mt-snj-restaurants',
+                array( $this, 'mt_snj_restaurants_page' ) );
+
+            add_submenu_page( 'mt-snj-general',
                 esc_html__( 'About', 'mt-snj' ),
                 esc_html__( 'About', 'mt-snj' ),
                 $capability,
@@ -95,6 +102,10 @@ if ( ! class_exists( 'MT_SeatNinja' ) ) {
 
         public function mt_snj_general_page() {
             include_once( MT_SEATNINJA_DIR . '/inc/page-settings.php' );
+        }
+
+        public function mt_snj_restaurants_page() {
+            include_once( MT_SEATNINJA_DIR . '/inc/page-restaurants.php' );
         }
 
         public function admin_enqueue_scripts() {
