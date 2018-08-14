@@ -61,7 +61,8 @@
                     value           : new Date(),
                     datepicker      : false,
                     step            : 15,
-                    format          : 'H:i',
+                    format          : 'h:i A',
+                    formatTime      : 'h:i A',
                     onChangeDateTime: function (e, $input) {
 
                         if ($input.closest('.mt-seatninja-form').length) {
@@ -342,18 +343,18 @@
                                     $form.addClass('mt-snj-hidden')
                                 }
 
-                                let restaurantName = $('.mt-seatninja').hasClass('mt-seatninja--single')
-                                    ?  $('.restaurant-name').val() : $('.restaurant-id option:selected').text()
+                                let restaurantName = $('.mt-seatninja')
+                                    .hasClass('mt-seatninja--single') ? $('.restaurant-name')
+                                    .val() : $('.restaurant-id option:selected').text()
 
-                                let time = $form.find('#time-text').length ? $('#time-text').val() : $('.timepicker').val()
+                                let time = $form.find('#time-text').length ? $('#time-text').val() : $('.timepicker')
+                                    .val()
 
                                 let message = '<p>Thank you! We will call back soon for you to confirm</p>'
                                 message += '<p>Here is the reservation information:</p>'
-                                message +=
-                                    'Restaurant: <strong>' + restaurantName + '</strong><br/>'
+                                message += 'Restaurant: <strong>' + restaurantName + '</strong><br/>'
                                 message += 'Number of people: <strong>' + data.partySize + '</strong><br/>'
-                                message +=
-                                    'Time: <strong>' + $('.datepicker').val() + ' ' + time + '</strong><br/>'
+                                message += 'Time: <strong>' + $('.datepicker').val() + ' ' + time + '</strong><br/>'
                                 message += 'Name: <strong>' + data.firstName + ' ' + data.lastName + '</strong><br/>'
                                 message += 'Phone Number: <strong>' + data.phoneNumber + '</strong><br/>'
                                 message += 'Email: <strong>' + data.email + '</strong>'
