@@ -1,16 +1,17 @@
 <?php
 
-function mt_seatninja_restaurant_selectbox ($label = true) {
+function mt_seatninja_restaurant_selectbox ($label = true, $restaurant_id = -1) {
 
     $html = array();
 
     $restaurants = mt_snj_get_restaurants();
+    $preselected = $restaurant_id > 0;
 
     if ( $label ) {
         $html[] = '<label for="restaurants-select">' . esc_html__('Select a restaurant', 'mt-snj') . '</label>';
     }
 
-    $html[] = '<select class="restaurant-id">';
+    $html[] = '<select class="restaurant-id"' . ($preselected ? 'disabled' : '') . '>';
 
     if ( $label ) {
         $html[] = '<option id="-1">---</option>';
@@ -21,7 +22,11 @@ function mt_seatninja_restaurant_selectbox ($label = true) {
     if ( ! empty( $restaurants ) ) {
 
         foreach ( $restaurants as $restaurant ) {
-            $html[] = '<option value="' . $restaurant['id'] . '">' .  $restaurant['name'] . '</option>';
+            if ($preselected && $restaurant['id'] == $restaurant_id) {
+                $html[] = '<option value="' . $restaurant['id'] . '" selected>' .  $restaurant['name'] . '</option>';
+            } else {
+                $html[] = '<option value="' . $restaurant['id'] . '">' .  $restaurant['name'] . '</option>';
+            }
         }
     }
 

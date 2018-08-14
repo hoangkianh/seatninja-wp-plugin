@@ -200,11 +200,6 @@
                                         .html('<a href="' + res.website + '">' + res.website + '</a>')
                                 }
 
-                                if (typeof res.name === 'undefined') {
-                                    self.getRestaurantProfileFromApi(restaurantId)
-                                } else {
-                                    $('.restaurant-name').val(res.name)
-                                }
                                 self.getReservationTimes()
                             }
                         },
@@ -238,7 +233,6 @@
                         if (typeof res.name !== 'undefined') {
                             name = res.name
                         }
-                        $('.restaurant-name').val(name)
                     },
                     error  : (error) => {
                         console.log(error)
@@ -343,9 +337,7 @@
                                     $form.addClass('mt-snj-hidden')
                                 }
 
-                                let restaurantName = $('.mt-seatninja')
-                                    .hasClass('mt-seatninja--single') ? $('.restaurant-name')
-                                    .val() : $('.restaurant-id option:selected').text()
+                                let restaurantName = $('.restaurant-id option:selected').text()
 
                                 let time = $form.find('#time-text').length ? $('#time-text').val() : $('.timepicker')
                                     .val()
