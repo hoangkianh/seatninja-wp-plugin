@@ -7,6 +7,27 @@ vc_map( array(
     'params'      => array(
         array(
             'group'      => esc_html__( 'General', 'mt-snj' ),
+            'type'       => 'checkbox',
+            'param_name' => 'show_all',
+            'value'      => array(
+                esc_html__( 'Show all restaurants', 'mt-snj' ) => 'yes',
+            ),
+            'std'        => yes,
+        ),
+        array(
+            'group'       => esc_html__( 'General', 'mt-snj' ),
+            'type'        => 'dropdown',
+            'heading'     => esc_html__( 'Restaurant', 'mt-snj' ),
+            'param_name'  => 'restaurant_id',
+            'value'       => mt_snj_get_restaurants_for_vc(),
+            'dependency'  => array(
+                'element'            => 'show_all',
+                'value_not_equal_to' => 'yes',
+            ),
+            'admin_label' => true,
+        ),
+        array(
+            'group'      => esc_html__( 'General', 'mt-snj' ),
             'type'       => 'textarea_html',
             'heading'    => esc_html__( 'Form Text', 'mt-snj' ),
             'param_name' => 'text',
@@ -39,17 +60,22 @@ function mt_seatninja_form( $atts ) {
     wp_enqueue_script( 'mt-seatninja-wpb' );
 
     $atts = shortcode_atts( array(
-        'text'     => '',
-        'el_class' => '',
-        'css'      => '',
+        'show_all'      => '',
+        'restaurant_id' => '',
+        'text'          => '',
+        'el_class'      => '',
+        'css'           => '',
     ),
         $atts,
         __FUNCTION__ );
 
     extract( $atts );
 
+    $show_all  = isset( $atts['show_all'] ) && $atts['show_all'] == 'yes';
+
     $css_class = array(
         'mt-seatninja-form',
+        $show_all ? '' : 'mt-seatninja--single',
         $atts['el_class'],
         vc_shortcode_custom_css_class( $atts['css'] ),
     );
@@ -74,7 +100,7 @@ function mt_seatninja_form( $atts ) {
         $html[]  = '<div class="row">';
         $html[]  = '<div class="col-xs-12 col-sm-6 col-md-3">';
         $html[]  = '<div class="mt-snj-form-group">';
-        $html[]  = mt_seatninja_restaurant_selectbox(false);
+        $html[]  = mt_seatninja_restaurant_selectbox( false );
         $html[]  = '</div>';
         $html[]  = '</div>';
         $html[]  = '<div class="col-xs-12 col-sm-6 col-md-3">';
@@ -88,16 +114,18 @@ function mt_seatninja_form( $atts ) {
         $html[]  = '</div>';
         $html[]  = '<div class="col-xs-12 col-sm-6 col-md-3">';
         $html[]  = '<div class="mt-snj-form-group">' . mt_seatninja_time_picker( false ) . '</div>';
-        $html[] = '<input type="hidden" id="time"/>';
+        $html[]  = '<input type="hidden" id="time"/>';
         $html[]  = '</div>';
         $html[]  = '</div>';
 
         $html[] = '<div class="row">';
         $html[] = '<div class="col-xs-12 col-sm-6 col-md-3 mt-snj-form-group">';
-        $html[] = '<input type="text" name="first-name" class="first-name" required placeholder="' . esc_html( 'First Name', 'mt-snj' ) . '" />';
+        $html[] = '<input type="text" name="first-name" class="first-name" required placeholder="' . esc_html( 'First Name',
+                'mt-snj' ) . '" />';
         $html[] = '</div>';
         $html[] = '<div class="col-xs-12 col-sm-6 col-md-3 mt-snj-form-group">';
-        $html[] = '<input type="text" name="last-name" class="last-name" required placeholder="' . esc_html( 'Last Name', 'mt-snj' ) . '" />';
+        $html[] = '<input type="text" name="last-name" class="last-name" required placeholder="' . esc_html( 'Last Name',
+                'mt-snj' ) . '" />';
         $html[] = '</div>';
         $html[] = '<div class="col-xs-12 col-sm-6 col-md-3 mt-snj-form-group">';
         $html[] = '<input type="text" name="phone" class="phone" required placeholder="' . esc_html( 'Phone Number',
@@ -109,7 +137,7 @@ function mt_seatninja_form( $atts ) {
         $html[] = '</div>';
 
         $html[] = '<div class="col-xs-12">';
-        $html[]  = '<div class="mt-snj-form-group">';
+        $html[] = '<div class="mt-snj-form-group">';
         $html[] = '<textarea name="notes" class="notes" placeholder="' . esc_html( 'Add special request (Optional)',
                 'mt-snj' ) . '"></textarea>';
         $html[] = '</div>';
