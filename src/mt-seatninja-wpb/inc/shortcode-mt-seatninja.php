@@ -96,21 +96,20 @@ function mt_seatninja( $atts ) {
         $html[] = '<div class="col-xs-12' . ($show_info ? ' col-md-7 col-lg-8' : '') . ' mt-snj-main">';
         $html[] = '<div class="row">';
 
+        $html[] = '<div class="col-xs-12 col-sm-6 col-md-3">';
         if ( $show_all ) {
-            $html[] = '<div class="col-xs-12 col-sm-6 col-md-3">';
             $html[] = mt_seatninja_restaurant_selectbox();
-            $html[] = '</div>';
         } elseif ( isset( $atts['restaurant_id'] ) ) {
-            $html[] = '<input class="restaurant-id" type="hidden" value="' . $atts['restaurant_id'] . '" />';
-            $html[] = '<input class="restaurant-name" type="hidden" value="' . $atts['restaurant_id'] . '" />';
+            $html[] = mt_seatninja_restaurant_selectbox(true, $atts['restaurant_id']);
         }
+        $html[] = '</div>';
 
-        $html[]  = '<div class="col-xs-12 col-sm-6' . ( $show_all ? 'col-md-3' : '' ) . '">';
+        $html[]  = '<div class="col-xs-12 col-sm-6 col-md-3">';
         $html[]  = '<label for="party-size">' . esc_html__( 'Number of people', 'mt-snj' ) . '</label>';
-        $html [] = '<input type="number" min="1" class="party-size" value="">';
+        $html [] = '<input type="number" min="1" max="14" class="party-size" value="">';
         $html[]  = '</div>';
 
-        $html[] = '<div class="col-xs-12 col-sm-6' . ( $show_all ? 'col-md-3' : '' ) . '">';
+        $html[] = '<div class="col-xs-12 col-sm-6 col-md-3">';
         $html[] = mt_seatninja_date_picker();
         $html[] = '</div>';
 
@@ -139,7 +138,7 @@ function mt_seatninja( $atts ) {
 
 
         $html[] = '<div id="reservation-modal" class="mfp-hide">';
-        $html[] = '<div class="mt-snj__message"></div>';
+        $html[] = '<div class="mt-snj__message" ' . ($show_all ? '' : 'id="' . $atts['restaurant_id'] . '"')  . '></div>';
         $html[] = '<form class="mt-snj-reservation-form">';
         $html[] = '<div class="mt-snj-form__error"></div>';
         $html[] = '<div class="mt-snj-input-group">';

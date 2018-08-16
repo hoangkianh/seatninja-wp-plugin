@@ -105,8 +105,8 @@ function mt_seatninja_form( $atts ) {
         $html[]  = '</div>';
         $html[]  = '<div class="col-xs-12 col-sm-6 col-md-3">';
         $html[]  = '<div class="mt-snj-form-group">';
-        $html [] = '<input type="number" min="1" class="party-size" value="" placeholder="' . esc_html( 'Number of people',
-                'mt-snj' ) . '">';
+        $html [] = '<input type="number" min="1" max="14" class="party-size" value="" placeholder="' . esc_html( 'Number of people',
+                'mt-snj' ) . '" oninvalid="this.setCustomValidity(\'If you would like to make a reservation for 15 or more, please contact the restaurant directly. Thank you!\')" oninput="this.setCustomValidity(\'\')">';
         $html [] = '</div>';
         $html[]  = '</div>';
         $html[]  = '<div class="col-xs-12 col-sm-6 col-md-3">';

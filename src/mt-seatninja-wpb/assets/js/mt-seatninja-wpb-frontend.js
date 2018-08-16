@@ -40,9 +40,14 @@
                     format          : 'M d Y',
                     onChangeDateTime: function (e, $input) {
 
+                        var $form = $(this).closest('.mt-seatninja')
+
                         if ($input.val() !== self.currentDate && $input.closest('.mt-seatninja').length) {
                             self.currentDate = $input.val()
-                            self.getReservationTimes()
+
+                            if ($form.length) {
+                                self.getReservationTimes($form)
+                            }
                         }
 
                         if ($input.closest('.mt-seatninja-form').length) {
@@ -78,28 +83,41 @@
                 var self = this
 
                 $('.party-size').on('change', function () {
+                    var $form = $(this).closest('.mt-seatninja')
 
                     if (parseInt($(this).val()) < 1) {
                         $('.mt-snj-times').html('')
                     }
 
-                    if ($(this).closest('.mt-seatninja').length) {
-                        self.getReservationTimes()
+                    if ($form.length) {
+                        self.getReservationTimes($form)
                     }
                 })
             },
-            getReservationTimes        : function () {
+            getReservationTimes        : function ($form) {
                 let self = this
                 let restaurantId = $('.restaurant-id').val()
                 let partySize = $('.party-size').val()
                 let date = $('.datepicker').val()
 
-                $('.mt-snj-times').addClass('mt-snj-loading')
-
                 if (isNaN(restaurantId) || partySize < 1) {
-                    $('.mt-snj-times').removeClass('mt-snj-loading')
+                    $form.find('.mt-snj-times').html('')
                     return false
                 }
+
+                if (partySize > 14) {
+                    $form.find('.mt-snj__message').html('If you would like to make a reservation for 15 or more, please contact the restaurant directly. Thank you!')
+                    $form.find('.mt-snj-times').html('')
+                    $.magnificPopup.open({
+                        items: {
+                            src : '.mt-snj__message',
+                            type: 'inline'
+                        }
+                    })
+                    return false
+                }
+
+                $form.find('.mt-snj-times').addClass('mt-snj-loading')
 
                 if (partySize > 0 && date) {
                     $.ajax({
@@ -115,7 +133,7 @@
                         },
                         success: (res) => {
 
-                            $('.mt-snj-times').removeClass('mt-snj-loading')
+                            $form.find('.mt-snj-times').removeClass('mt-snj-loading')
 
                             let html = ''
 
@@ -136,7 +154,7 @@
                                 html += '</div>'
                             }
 
-                            $('.mt-snj-times').html(html)
+                            $form.find('.mt-snj-times').html(html)
                             self.reservationModal()
                         },
                         error  : (error) => {
@@ -199,13 +217,6 @@
                                     $('.mt-snj-info__url .mt-snj-info__text')
                                         .html('<a href="' + res.website + '">' + res.website + '</a>')
                                 }
-
-                                if (typeof res.name === 'undefined') {
-                                    self.getRestaurantProfileFromApi(restaurantId)
-                                } else {
-                                    $('.restaurant-name').val(res.name)
-                                }
-                                self.getReservationTimes()
                             }
                         },
                         error  : (error) => {
@@ -238,7 +249,6 @@
                         if (typeof res.name !== 'undefined') {
                             name = res.name
                         }
-                        $('.restaurant-name').val(name)
                     },
                     error  : (error) => {
                         console.log(error)
@@ -316,15 +326,20 @@
 
                     let data = {
                         action      : 'booking_reservation',
-                        restaurantId: $('.restaurant-id').val(),
+                        restaurantId: $form.find('.restaurant-id').val(),
                         time        : $form.find('#time').val(),
-                        partySize   : $('.party-size').val(),
+                        partySize   : $form.find('.party-size').val(),
                         firstName   : $form.find('.first-name').val(),
                         lastName    : $form.find('.last-name').val(),
                         phoneNumber : $form.find('.phone').val(),
                         email       : $form.find('.email').val(),
                         notes       : $form.find('.notes').val(),
                         nonce       : mtSeatNinja.ajaxNonce,
+                    }
+
+                    if (partySize > 14) {
+                        $form.find('.mt-snj__message').html('If you would like to make a reservation for 15 or more, please contact the restaurant directly. Thank you!');
+                        return false;
                     }
 
                     $.ajax({
@@ -334,8 +349,8 @@
                         data   : data,
                         success: (res) => {
                             $form.removeClass('mt-snj-loading')
-                            $('.mt-snj__message').html('')
-                            $('.mt-snj-form__error').html('')
+                            $form.find('.mt-snj__message').html('')
+                            $form.find('.mt-snj-form__error').html('')
 
                             if (res.data) {
 
@@ -343,23 +358,20 @@
                                     $form.addClass('mt-snj-hidden')
                                 }
 
-                                let restaurantName = $('.mt-seatninja')
-                                    .hasClass('mt-seatninja--single') ? $('.restaurant-name')
-                                    .val() : $('.restaurant-id option:selected').text()
+                                let restaurantName =$form.find('.restaurant-id option:selected').text()
 
-                                let time = $form.find('#time-text').length ? $('#time-text').val() : $('.timepicker')
-                                    .val()
+                                let time = $form.find('#time-text').length ? $form.find('#time-text').val() : $form.find('.timepicker').val()
 
                                 let message = '<p>Thank you! We will call back soon for you to confirm</p>'
                                 message += '<p>Here is the reservation information:</p>'
                                 message += 'Restaurant: <strong>' + restaurantName + '</strong><br/>'
                                 message += 'Number of people: <strong>' + data.partySize + '</strong><br/>'
-                                message += 'Time: <strong>' + $('.datepicker').val() + ' ' + time + '</strong><br/>'
+                                message += 'Time: <strong>' + $form.find('.datepicker').val() + ' ' + time + '</strong><br/>'
                                 message += 'Name: <strong>' + data.firstName + ' ' + data.lastName + '</strong><br/>'
                                 message += 'Phone Number: <strong>' + data.phoneNumber + '</strong><br/>'
                                 message += 'Email: <strong>' + data.email + '</strong>'
 
-                                $('.mt-snj__message').html(message)
+                                $form.find('.mt-snj__message').html(message)
 
                                 $.magnificPopup.open({
                                     items: {
