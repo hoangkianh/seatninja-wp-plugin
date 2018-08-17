@@ -71,7 +71,7 @@ function mt_seatninja_form( $atts ) {
 
     extract( $atts );
 
-    $show_all  = isset( $atts['show_all'] ) && $atts['show_all'] == 'yes';
+    $show_all = isset( $atts['show_all'] ) && $atts['show_all'] == 'yes';
 
     $css_class = array(
         'mt-seatninja-form',
@@ -84,7 +84,7 @@ function mt_seatninja_form( $atts ) {
     $keys = MT_SeatNinja::get_snj_keys();
 
     $html[] = '<form class="mt-snj-reservation-form">';
-    $html[] = '<div class="mt-snj__message"></div>';
+    $html[] = '<div class="mt-snj__message" ' . ($show_all ? '' : 'id="' . $atts['restaurant_id'] . '"')  . '></div>';
     $html[] = '<div class="mt-snj-form__error"></div>';
     $html[] = '<div class="container">';
 
@@ -97,10 +97,14 @@ function mt_seatninja_form( $atts ) {
             $html[] = '</div>';
         }
 
-        $html[]  = '<div class="row">';
-        $html[]  = '<div class="col-xs-12 col-sm-6 col-md-3">';
-        $html[]  = '<div class="mt-snj-form-group">';
-        $html[]  = mt_seatninja_restaurant_selectbox( false );
+        $html[] = '<div class="row">';
+        $html[] = '<div class="col-xs-12 col-sm-6 col-md-3">';
+        $html[] = '<div class="mt-snj-form-group">';
+        if ( $show_all ) {
+            $html[] = mt_seatninja_restaurant_selectbox(false);
+        } elseif ( isset( $atts['restaurant_id'] ) ) {
+            $html[] = mt_seatninja_restaurant_selectbox( false, $atts['restaurant_id'] );
+        }
         $html[]  = '</div>';
         $html[]  = '</div>';
         $html[]  = '<div class="col-xs-12 col-sm-6 col-md-3">';

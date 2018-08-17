@@ -60,7 +60,6 @@
                 })
             },
             timePicker                 : function () {
-                var self = this
 
                 $('.timepicker').datetimepicker({
                     value           : new Date(),
@@ -337,9 +336,18 @@
                         nonce       : mtSeatNinja.ajaxNonce,
                     }
 
-                    if (partySize > 14) {
+                    if (parseInt(data.partySize) > 14) {
                         $form.find('.mt-snj__message').html('If you would like to make a reservation for 15 or more, please contact the restaurant directly. Thank you!');
                         return false;
+                    }
+
+                    if (!data.time) {
+                        let time = $('.timepicker').val()
+                        let date = $('.datepicker').val()
+                        let newDate = new Date(date + ' ' + time)
+                        $('.mt-seatninja-form').find('#time').val(newDate.toISOString())
+
+                        data.time = $('.mt-seatninja-form').find('#time').val()
                     }
 
                     $.ajax({
