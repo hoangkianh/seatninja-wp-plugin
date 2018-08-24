@@ -12,7 +12,7 @@ vc_map( array(
             'value'      => array(
                 esc_html__( 'Show all restaurants', 'mt-snj' ) => 'yes',
             ),
-            'std'        => yes,
+            'std'        => 'yes',
         ),
         array(
             'group'       => esc_html__( 'General', 'mt-snj' ),
@@ -117,8 +117,10 @@ function mt_seatninja_form( $atts ) {
         $html[]  = '<div class="mt-snj-form-group">' . mt_seatninja_date_picker( false ) . '</div>';
         $html[]  = '</div>';
         $html[]  = '<div class="col-xs-12 col-sm-6 col-md-3">';
-        $html[]  = '<div class="mt-snj-form-group">' . mt_seatninja_time_picker( false ) . '</div>';
-        $html[]  = '<input type="hidden" id="time"/>';
+        $html[]  = '<div class="mt-snj-form-group">';
+        $html[] = '<select class="timepicker">';
+        $html[] = '</select>';
+        $html[]  = '</div>';
         $html[]  = '</div>';
         $html[]  = '</div>';
 
@@ -157,7 +159,8 @@ function mt_seatninja_form( $atts ) {
     $html[] = '</div>';
     $html[] = '</form>';
 
-    return sprintf( '<div class="%s">%s</div>',
+    return sprintf( '<div class="%s" id="%s">%s</div>',
         trim( implode( ' ', $css_class ) ),
+        'mt-snj-form-' . $atts['restaurant_id'],
         implode( '', $html ) );
 }
