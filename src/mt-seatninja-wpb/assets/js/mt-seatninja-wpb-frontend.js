@@ -10,10 +10,6 @@
                 this.partySizeEvent()
                 this.getRestaurantApi()
                 this.bookingReservation()
-
-                if (mtSeatNinja.gmapsApiKey && $('#mt-snj-map').length) {
-                    this.gmap()
-                }
             },
             formatDate                 : function (date) {
                 let d     = new Date(date),
@@ -230,25 +226,6 @@
                         console.log(error)
                     }
                 })
-            },
-            gmap                       : function () {
-
-                let location = {
-                        lat: 37.772323,
-                        lng: -122.214897
-                    },
-                    self     = this
-
-                self.map = new google.maps.Map($('#mt-snj-map')[0], {
-                    zoom  : 13,
-                    center: location
-                })
-
-                self.marker = new google.maps.Marker({
-                    position: location,
-                    map     : self.map
-                })
-
             },
             bookingReservation         : function () {
 

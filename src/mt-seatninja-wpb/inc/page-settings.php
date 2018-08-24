@@ -39,8 +39,13 @@ $keys = MT_SeatNinja::get_snj_keys();
               <td><input class="widefat" id="customer-token" type="text" value="<?php echo esc_attr($keys['customer-token']) ?>"/></td>
             </tr>
             <tr>
-              <th><label for="google-api-key"><?php esc_html_e( 'Google Maps API Key', 'mt-snj' ) ?></label></th>
-              <td><input class="widefat" id="google-api-key" type="text" value="<?php echo esc_attr($keys['google-api-key']) ?>"/></td>
+              <th><label for="google-api-key"><?php esc_html_e( 'Google Time Zone API Key', 'mt-snj' ) ?></label></th>
+              <td>
+                <input class="widefat" id="google-api-key" type="text" value="<?php echo esc_attr($keys['google-api-key']) ?>"/>
+                <p class="help"><?php
+                  printf(__('Get Time Zone API Key <a href="%s" target="_blank">here</a>', 'mt-snj'), 'https://developers.google.com/maps/documentation/timezone/get-api-key')
+                ?></p>
+              </td>
             </tr>
           </table>
           <button type="submit" name="submit" id="submit-btn" class="button button-primary">Save Changes

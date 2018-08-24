@@ -46,7 +46,6 @@ if ( ! class_exists( 'MT_SeatNinja' ) ) {
 
             include_once( MT_SEATNINJA_DIR . '/inc/mt-seatninja-functions.php' );
             include_once( MT_SEATNINJA_DIR . '/inc/mt-seatninja-template-functions.php' );
-            //include_once( MT_SEATNINJA_DIR . '/inc/shortcode-mt-seatninja.php' );
             include_once( MT_SEATNINJA_DIR . '/inc/shortcode-mt-seatninja-form.php' );
         }
 
@@ -134,12 +133,6 @@ if ( ! class_exists( 'MT_SeatNinja' ) ) {
                 null,
                 true );
 
-            wp_register_script( 'google-map',
-                'https://maps.googleapis.com/maps/api/js?key=' . $keys['google-api-key'],
-                null,
-                null,
-                true );
-
             wp_register_style( 'magnific-popup',
                 MT_SEATNINJA_PATH . 'assets/libs/magnific-popup/magnific-popup.css' );
             wp_register_script( 'magnific-popup',
@@ -159,8 +152,7 @@ if ( ! class_exists( 'MT_SeatNinja' ) ) {
                 array(
                     'ajaxUrl'     => esc_url( admin_url( 'admin-ajax.php' ) ),
                     'ajaxNonce'   => wp_create_nonce( 'mt-seatninja-wpb' ),
-                    'partyOfText' => esc_html__( 'Party of', 'mt-snj' ),
-                    'gmapsApiKey' => $keys['google-api-key'],
+                    'partyOfText' => esc_html__( 'Party of', 'mt-snj' )
                 ) );
 
             wp_register_style( 'mt-seatninja-wpb', MT_SEATNINJA_PATH . 'assets/css/mt-seatninja-wpb-frontend.css' );
