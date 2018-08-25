@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
-define( 'MT_SEATNINJA_API_URL', 'https://api.seatninja.com' );
+define( 'MT_SEATNINJA_API_URL', 'https://sandbox.seatninja.com' );
 //IuycF6TOJH2wbHhk8lNZtwBqHz9lsys4sQ6b9lmh
 define( 'MT_SEATNINJA_PATH', plugin_dir_url( __FILE__ ) );
 define( 'MT_SEATNINJA_DIR', dirname( __FILE__ ) );
@@ -137,6 +137,14 @@ if ( ! class_exists( 'MT_SeatNinja' ) ) {
                 MT_SEATNINJA_PATH . 'assets/libs/magnific-popup/magnific-popup.css' );
             wp_register_script( 'magnific-popup',
                 MT_SEATNINJA_PATH . 'assets/libs/magnific-popup/jquery.magnific-popup.min.js',
+                null,
+                null,
+                true );
+
+            wp_register_style( 'sumoselect',
+                MT_SEATNINJA_PATH . 'assets/libs/sumoselect/sumoselect.min.css' );
+            wp_register_script( 'sumoselect',
+                MT_SEATNINJA_PATH . 'assets/libs/sumoselect/jquery.sumoselect.min.js',
                 null,
                 null,
                 true );

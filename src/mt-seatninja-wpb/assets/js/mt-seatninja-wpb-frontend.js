@@ -1,15 +1,16 @@
 (function ($) {
     mtui_wpb_frontend = (function () {
         return {
-            init                       : function () {
+            init               : function () {
                 let currentDate,
                     timeZone
                 this.datePicker()
+                this.timePicker()
                 this.partySizeEvent()
                 this.getRestaurantApi()
                 this.bookingReservation()
             },
-            formatDate                 : function (date) {
+            formatDate         : function (date) {
                 let d     = new Date(date),
                     month = '' + (d.getMonth() + 1),
                     day   = '' + d.getDate(),
@@ -24,7 +25,7 @@
 
                 return [month, day, year].join('-')
             },
-            datePicker                 : function () {
+            datePicker         : function () {
                 let self = this
 
                 $('.datepicker').datetimepicker({
@@ -43,15 +44,21 @@
                     }
                 })
             },
-            partySizeEvent             : function () {
+            timePicker: function () {
+                $('.timepicker').SumoSelect({
+                    placeholder: 'Select time',
+                    search     : true,
+                    searchText : 'Search time...',
+                })
+            },
+            partySizeEvent     : function () {
                 let self = this
 
                 $('.party-size').on('change', function () {
                     self.getReservationTimes()
                 })
             },
-
-            getReservationTimes        : function () {
+            getReservationTimes: function () {
                 let self = this
                 let restaurantId = $('.restaurant-id').val()
                 let partySize = $('.party-size').val()
@@ -63,7 +70,7 @@
                     return false
                 }
 
-                $timepicker.parent('.mt-snj-form-group').addClass('mt-snj-loading')
+                $timepicker.closest('.mt-snj-form-group').addClass('mt-snj-loading')
 
                 if (partySize > 0 && date) {
                     $.ajax({
@@ -79,17 +86,13 @@
                         },
                         success: (res) => {
 
-                            $timepicker.parent('.mt-snj-form-group').removeClass('mt-snj-loading')
+                            $timepicker.closest('.mt-snj-form-group').removeClass('mt-snj-loading')
 
                             for (let i = 0; i < res.length; i++) {
                                 let times = res[i].times
-                                self.timeZone = res[i].timezone
 
                                 for (let j = 0; j < times.length; j++) {
-                                    $('.timepicker').append($('<option>', {
-                                        value: times[j].value,
-                                        text: times[j].text
-                                    }));
+                                    $timepicker[0].sumo.add(times[j].value, times[j].text)
                                 }
                             }
                         },
@@ -99,9 +102,9 @@
                     })
                 }
             },
-            getRestaurantApi           : function () {
+            getRestaurantApi   : function () {
 
-                let self = this,
+                let self          = this,
                     $restaurantID = $('.restaurant-id')
 
                 $restaurantID.on('change', function () {
@@ -112,9 +115,10 @@
                     $restaurantID.trigger('change')
                 }
             },
-            bookingReservation         : function () {
+            bookingReservation : function () {
 
-                let $form = $('.mt-snj-reservation-form')
+                let $form = $('.mt-snj-reservation-form'),
+                    self = this
 
                 $form.on('submit', function (e) {
 
@@ -136,12 +140,13 @@
                     }
 
                     if (parseInt(data.partySize) > 14) {
-                        $form.find('.mt-snj__message').html('If you would like to make a reservation for 15 or more, please contact the restaurant directly. Thank you!');
-                        return false;
+                        $form.find('.mt-snj__message')
+                             .html('If you would like to make a reservation for 15 or more, please contact the restaurant directly. Thank you!')
+                        return false
                     }
 
                     if (!data.time) {
-                        data.time = $('.timepicker').val()
+                        data.time = $form.find('.timepicker').val()
                     }
 
                     $.ajax({
@@ -160,13 +165,16 @@
                                     $form.addClass('mt-snj-hidden')
                                 }
 
-                                let restaurantName =$form.find('.restaurant-id option:selected').text()
+                                let restaurantName = $form.find('.restaurant-id option:selected').text()
 
                                 let message = '<p>Thank you! We will call back soon for you to confirm</p>'
                                 message += '<p>Here is the reservation information:</p>'
                                 message += 'Restaurant: <strong>' + restaurantName + '</strong><br/>'
                                 message += 'Number of people: <strong>' + data.partySize + '</strong><br/>'
-                                message += 'Time: <strong>' + $form.find('.datepicker').val() + ' ' + $form.find('.timepicker option:selected').text() + '</strong><br/>'
+                                message +=
+                                    'Time: <strong>' + $form.find('.datepicker')
+                                                            .val() + ' ' + $form.find('.timepicker option:selected')
+                                                                                .text() + '</strong><br/>'
                                 message += 'Name: <strong>' + data.firstName + ' ' + data.lastName + '</strong><br/>'
                                 message += 'Phone Number: <strong>' + data.phoneNumber + '</strong><br/>'
                                 message += 'Email: <strong>' + data.email + '</strong>'
@@ -180,6 +188,10 @@
                                     }
                                 })
                                 $form[0].reset()
+                                self.datePicker()
+                                $form.find('.timepicker option').remove()
+                                $form.find('.timepicker')[0].sumo.unload();
+                                self.timePicker()
                             } else if (res.error) {
 
                                 let html = ''

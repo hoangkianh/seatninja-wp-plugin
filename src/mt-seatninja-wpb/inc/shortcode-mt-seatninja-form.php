@@ -56,6 +56,8 @@ function mt_seatninja_form( $atts ) {
     wp_enqueue_script( 'datetimepicker' );
     wp_enqueue_style( 'magnific-popup' );
     wp_enqueue_script( 'magnific-popup' );
+    wp_enqueue_style( 'sumoselect' );
+    wp_enqueue_script( 'sumoselect' );
     wp_enqueue_style( 'mt-seatninja-wpb' );
     wp_enqueue_script( 'mt-seatninja-wpb' );
 
