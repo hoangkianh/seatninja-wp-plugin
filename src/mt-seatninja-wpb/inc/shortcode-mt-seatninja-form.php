@@ -71,7 +71,7 @@ function mt_seatninja_form( $atts ) {
 
     extract( $atts );
 
-    $show_all = isset( $atts['show_all'] ) && $atts['show_all'] == 'yes';
+    $show_all = ! (isset( $atts['restaurant_id'] ) && $atts['restaurant_id'] != '');
 
     $css_class = array(
         'mt-seatninja-form',

@@ -3,8 +3,6 @@
         return {
             init                       : function () {
                 let currentDate,
-                    map,
-                    marker,
                     timeZone
                 this.datePicker()
                 this.partySizeEvent()
@@ -65,19 +63,7 @@
                     return false
                 }
 
-                // if (partySize > 14) {
-                    // $form.find('.mt-snj__message').html('If you would like to make a reservation for 15 or more, please contact the restaurant directly. Thank you!')
-                    // $form.find('.mt-snj-times').html('')
-                    // $.magnificPopup.open({
-                    //     items: {
-                    //         src : '.mt-snj__message',
-                    //         type: 'inline'
-                    //     }
-                    // })
-                //     return false
-                // }
-
-                $timepicker.addClass('mt-snj-loading')
+                $timepicker.parent('.mt-snj-form-group').addClass('mt-snj-loading')
 
                 if (partySize > 0 && date) {
                     $.ajax({
@@ -92,6 +78,8 @@
                             nonce       : mtSeatNinja.ajaxNonce
                         },
                         success: (res) => {
+
+                            $timepicker.parent('.mt-snj-form-group').removeClass('mt-snj-loading')
 
                             for (let i = 0; i < res.length; i++) {
                                 let times = res[i].times
@@ -113,119 +101,16 @@
             },
             getRestaurantApi           : function () {
 
-                let self          = this,
+                let self = this,
                     $restaurantID = $('.restaurant-id')
 
                 $restaurantID.on('change', function () {
-
-                    if ($(this).closest('.mt-seatninja-form').length) {
-                        return
-                    }
-
-                    let restaurantId = $(this).val()
-
-                    $('.mt-snj-times').html('')
-
-                    $.ajax({
-                        type   : 'GET',
-                        url    : mtSeatNinja.ajaxUrl,
-                        timeout: 10000,
-                        data   : {
-                            action      : 'get_restaurant_info_from_db',
-                            restaurantId: restaurantId,
-                            nonce       : mtSeatNinja.ajaxNonce
-                        },
-                        success: (res) => {
-
-                            if (res) {
-
-                                $('.mt-snj-details ').removeClass('mt-snj-hidden')
-
-                                if (typeof self.map !== 'undefined' && typeof self.marker !== 'undefined') {
-
-                                    let location = {
-                                        lat: res.lat,
-                                        lng: res.lon
-                                    }
-
-                                    self.marker.setPosition(location)
-                                    self.map.panTo(self.marker.getPosition())
-                                }
-
-                                let address = res.address + ', ' + res.city + ', ' + res.state + ' ' + res.zip
-
-                                $('.mt-snj-info__address .mt-snj-info__text').html(address)
-                                $('.mt-snj-info__phone .mt-snj-info__text')
-                                    .html('<a href="tel:' + res.phoneNumber + '">' + res.phoneNumber + '</a>')
-                                $('.mt-snj-info__logo').attr('src', res.logoUrl)
-
-                                if (typeof res.website === 'undefined') {
-                                    self.getRestaurantDetailsromApi(restaurantId)
-                                } else {
-                                    $('.mt-snj-info__url .mt-snj-info__text')
-                                        .html('<a href="' + res.website + '">' + res.website + '</a>')
-                                }
-                            }
-                        },
-                        error  : (error) => {
-                            console.log(error)
-                        }
-                    })
+                    self.getReservationTimes()
                 })
 
                 if ($restaurantID.closest('.mt-seatninja--single').length) {
                     $restaurantID.trigger('change')
                 }
-            },
-            getRestaurantProfileFromApi: function (restaurantId) {
-
-                let self = this
-
-                $.ajax({
-                    type   : 'GET',
-                    url    : mtSeatNinja.ajaxUrl,
-                    timeout: 30000,
-                    data   : {
-                        action      : 'get_restaurant_profile',
-                        restaurantId: restaurantId,
-                        nonce       : mtSeatNinja.ajaxNonce
-                    },
-                    success: (res) => {
-
-                        let name = ''
-
-                        if (typeof res.name !== 'undefined') {
-                            name = res.name
-                        }
-                    },
-                    error  : (error) => {
-                        console.log(error)
-                    }
-                })
-            },
-            getRestaurantDetailsromApi : function (restaurantId) {
-
-                let self = this
-
-                $.ajax({
-                    type   : 'GET',
-                    url    : mtSeatNinja.ajaxUrl,
-                    timeout: 30000,
-                    data   : {
-                        action      : 'get_restaurant_details',
-                        restaurantId: restaurantId,
-                        nonce       : mtSeatNinja.ajaxNonce
-                    },
-                    success: (res) => {
-
-                        let website = res.website
-
-                        $('.mt-snj-info__url .mt-snj-info__text').html('<a href="' + website + '">' + website + '</a>')
-                    },
-                    error  : (error) => {
-                        console.log(error)
-                    }
-                })
             },
             bookingReservation         : function () {
 
