@@ -16,7 +16,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 define( 'MT_SEATNINJA_API_URL', 'https://sandbox.seatninja.com' );
-//IuycF6TOJH2wbHhk8lNZtwBqHz9lsys4sQ6b9lmh
 define( 'MT_SEATNINJA_PATH', plugin_dir_url( __FILE__ ) );
 define( 'MT_SEATNINJA_DIR', dirname( __FILE__ ) );
 
