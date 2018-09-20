@@ -47,6 +47,18 @@ $keys = MT_SeatNinja::get_snj_keys();
                 ?></p>
               </td>
             </tr>
+            <tr>
+              <th><label for="email-from"><?php esc_html_e( 'Send Confirmation Emails FROM', 'mt-snj' ) ?></label></th>
+              <td><input class="widefat" id="email-from" type="text" value="<?php echo esc_attr($keys['email-from']) ?>"/></td>
+            </tr>
+            <tr>
+              <th><label for="your-name"><?php esc_html_e( 'Your Name', 'mt-snj' ) ?></label></th>
+              <td><input class="widefat" id="your-name" type="text" value="<?php echo esc_attr($keys['your-name']) ?>"/></td>
+            </tr>
+            <tr>
+              <th><label for="email-to"><?php esc_html_e( 'Send Confirmation Emails TO', 'mt-snj' ) ?></label></th>
+              <td><input class="widefat" id="email-to" type="text" value="<?php echo esc_attr($keys['email-to']) ?>"/></td>
+            </tr>
           </table>
           <button type="submit" name="submit" id="submit-btn" class="button button-primary">Save Changes
           </button>

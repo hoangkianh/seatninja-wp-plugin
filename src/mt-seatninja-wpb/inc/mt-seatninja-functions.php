@@ -246,7 +246,36 @@ function mt_snj_booking_reservation() {
         array(),
         $_REQUEST );
 
+    if ($response['data']) {
+        mt_snj_send_confirmation_email($_REQUEST, $response['data']);
+    }
+
     wp_send_json( $response );
+}
+
+function mt_snj_send_confirmation_email($request, $data) {
+    $keys = MT_SeatNinja::get_snj_keys();
+    $restaurant_id = isset( $request['restaurantId'] ) ? $request['restaurantId'] : '';
+
+    $title   = 'New Reservation Received';
+    $headers = array('From: '. $keys['your-name'] . ' <'. $keys['email-from'] . '>');
+    
+    $message = '<h1>You just received a new reservation</h1>';
+    $message .= '<p>Here is the reservation information:</p>';
+    $message .= 'Restaurant: <strong>' . $request['restaurantName'] . '</strong><br/>';
+    $message .= 'Number of people: <strong>' . $request['partySize'] . '</strong><br/>';
+    $message .= 'Time: <strong>' . $request['timeText'] . '</strong><br/>';
+    $message .= 'Name: <strong>' . $request['firstName'] . ' ' . $request['lastName'] . '</strong><br/>';
+    $message .= 'Phone Number: <strong>' . $request['phoneNumber'] . '</strong><br/>';
+    $message .= 'Email: <strong>' . $request['email'] . '</strong><br/>';
+    $message .= 'Notes: <strong>' . $request['notes'] . '</strong>';
+
+    //Send the email
+    add_filter('wp_mail_content_type', create_function('', 'return "text/html"; '));
+    $email = wp_mail($keys['email-to'], $title, $message, $headers);
+    remove_filter('wp_mail_content_type', 'set_html_content_type');
+
+    return $email;
 }
 
 add_action( 'wp_ajax_nopriv_booking_reservation', 'mt_snj_booking_reservation' );

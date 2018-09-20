@@ -126,17 +126,22 @@
 
                     $form.addClass('mt-snj-loading')
 
+                    let restaurantName = $form.find('.restaurant-id option:selected').text()
+                    let timeText       = $form.find('.datepicker').val() + ' ' + $form.find('.timepicker option:selected').text()
+
                     let data = {
-                        action      : 'booking_reservation',
-                        restaurantId: $form.find('.restaurant-id').val(),
-                        time        : $form.find('.timepicker').val(),
-                        partySize   : $form.find('.party-size').val(),
-                        firstName   : $form.find('.first-name').val(),
-                        lastName    : $form.find('.last-name').val(),
-                        phoneNumber : $form.find('.phone').val(),
-                        email       : $form.find('.email').val(),
-                        notes       : $form.find('.notes').val(),
-                        nonce       : mtSeatNinja.ajaxNonce,
+                        action          : 'booking_reservation',
+                        restaurantId    : $form.find('.restaurant-id').val(),
+                        restaurantName  : restaurantName,
+                        time            : $form.find('.timepicker').val(),
+                        timeText        : timeText,
+                        partySize       : $form.find('.party-size').val(),
+                        firstName       : $form.find('.first-name').val(),
+                        lastName        : $form.find('.last-name').val(),
+                        phoneNumber     : $form.find('.phone').val(),
+                        email           : $form.find('.email').val(),
+                        notes           : $form.find('.notes').val(),
+                        nonce           : mtSeatNinja.ajaxNonce,
                     }
 
                     if (parseInt(data.partySize) > 14) {
@@ -165,19 +170,15 @@
                                     $form.addClass('mt-snj-hidden')
                                 }
 
-                                let restaurantName = $form.find('.restaurant-id option:selected').text()
-
                                 let message = '<p>Thank you! We will call back soon for you to confirm</p>'
                                 message += '<p>Here is the reservation information:</p>'
                                 message += 'Restaurant: <strong>' + restaurantName + '</strong><br/>'
                                 message += 'Number of people: <strong>' + data.partySize + '</strong><br/>'
-                                message +=
-                                    'Time: <strong>' + $form.find('.datepicker')
-                                                            .val() + ' ' + $form.find('.timepicker option:selected')
-                                                                                .text() + '</strong><br/>'
+                                message += 'Time: <strong>' + timeText + '</strong><br/>'
                                 message += 'Name: <strong>' + data.firstName + ' ' + data.lastName + '</strong><br/>'
                                 message += 'Phone Number: <strong>' + data.phoneNumber + '</strong><br/>'
-                                message += 'Email: <strong>' + data.email + '</strong>'
+                                message += 'Email: <strong>' + data.email + '</strong><br/>'
+                                message += 'Note: <strong>' + notes + '</strong>'
 
                                 $form.find('.mt-snj__message').html(message)
 
