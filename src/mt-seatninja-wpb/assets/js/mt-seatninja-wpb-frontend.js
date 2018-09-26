@@ -35,11 +35,9 @@
                     format          : 'M d Y',
                     onChangeDateTime: function (e, $input) {
 
-                        let $form = $(this).closest('.mt-seatninja')
-
-                        if ($input.val() !== self.currentDate && $input.closest('.mt-seatninja').length) {
+                        if ($input.val() !== self.currentDate) {
                             self.currentDate = $input.val()
-                            self.getReservationTimes()
+                            self.getReservationTimes($input.closest('.mt-snj-reservation-form'))
                         }
                     }
                 })
@@ -55,17 +53,17 @@
                 let self = this
 
                 $('.party-size').on('change', function () {
-                    self.getReservationTimes()
+                    self.getReservationTimes($(this).closest('.mt-snj-reservation-form'))
                 })
             },
-            getReservationTimes: function () {
+            getReservationTimes: function ($el) {
                 let self = this
-                let restaurantId = $('.restaurant-id').val()
-                let partySize = $('.party-size').val()
-                let date = $('.datepicker').val()
-                let $timepicker = $('.timepicker')
+                let restaurantId = $el.find('.restaurant-id').val()
+                let partySize = $el.find('.party-size').val()
+                let date = $el.find('.datepicker').val()
+                let $timepicker = $el.find('.timepicker')
 
-                if (isNaN(restaurantId) || partySize < 1 || partySize > 15) {
+                if (!restaurantId || partySize < 1 || partySize > 15) {
                     $timepicker.datetimepicker('destroy')
                     return false
                 }
@@ -108,26 +106,25 @@
                     $restaurantID = $('.restaurant-id')
 
                 $restaurantID.on('change', function () {
-                    self.getReservationTimes()
+                    self.getReservationTimes($(this).closest('.mt-snj-reservation-form'))
                 })
-
-                if ($restaurantID.closest('.mt-seatninja--single').length) {
-                    $restaurantID.trigger('change')
-                }
             },
             bookingReservation : function () {
 
-                let $form = $('.mt-snj-reservation-form'),
+                let $_form = $('.mt-snj-reservation-form'),
                     self = this
 
-                $form.on('submit', function (e) {
+                $_form.on('submit', function (e) {
 
                     e.preventDefault()
+
+                    let $form = $(this);
 
                     $form.addClass('mt-snj-loading')
 
                     let restaurantName = $form.find('.restaurant-id option:selected').text()
                     let timeText       = $form.find('.datepicker').val() + ' ' + $form.find('.timepicker option:selected').text()
+                    let notes          = $form.find('.notes').val()
 
                     let data = {
                         action          : 'booking_reservation',
@@ -140,7 +137,7 @@
                         lastName        : $form.find('.last-name').val(),
                         phoneNumber     : $form.find('.phone').val(),
                         email           : $form.find('.email').val(),
-                        notes           : $form.find('.notes').val(),
+                        notes           : notes,
                         nonce           : mtSeatNinja.ajaxNonce,
                     }
 
