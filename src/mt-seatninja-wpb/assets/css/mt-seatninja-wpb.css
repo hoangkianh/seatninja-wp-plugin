@@ -41,8 +41,7 @@
           animation: spin .7s infinite linear; }
 
 form#mt-snj-settings {
-  position: relative;
-  width: 50%; }
+  position: relative; }
 
 form#mt-snj-settings.loading:before {
   content: '';
