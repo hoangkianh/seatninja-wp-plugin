@@ -84,6 +84,8 @@
                         },
                         success: (res) => {
 
+                            $timepicker.html('');
+                            $timepicker[0].sumo.reload();
                             $timepicker.closest('.mt-snj-form-group').removeClass('mt-snj-loading')
 
                             for (let i = 0; i < res.length; i++) {
