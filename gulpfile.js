@@ -1,4 +1,5 @@
 'use strict'
+
 const gulp = require('gulp')
 const glob = require('glob')
 const bs = require('browser-sync')
