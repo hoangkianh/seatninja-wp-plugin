@@ -227,7 +227,7 @@ if ( ! class_exists( 'MT_SeatNinja' ) ) {
             $keys = self::get_snj_keys();
 
             if ( ! isset( $keys['google-api-key'] ) ) {
-                $keys['google-api-key'] = 'AIzaSyAv8AhrCUo0ay3PKhh4TtiWcETNCSvwwgI';
+                return '';
             }
 
             $url      = 'https://maps.googleapis.com/maps/api/timezone/json?location=' . $location['lat'] . ',' . $location['lon'] . '&timestamp=' . time() . '&key=' . $keys['google-api-key'];
