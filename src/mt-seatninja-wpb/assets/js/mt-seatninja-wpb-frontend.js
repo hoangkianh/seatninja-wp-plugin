@@ -44,9 +44,9 @@
             },
             timePicker: function () {
                 $('.timepicker').SumoSelect({
-                    placeholder: 'Select time',
+                    placeholder: 'Pick time',
                     search     : true,
-                    searchText : 'Search time...',
+                    searchText : 'Pick time...',
                 })
             },
             partySizeEvent     : function () {
