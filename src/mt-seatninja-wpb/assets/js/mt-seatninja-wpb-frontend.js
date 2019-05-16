@@ -198,7 +198,7 @@
                                 html = '<p>' + res.error.message + '</p>'
                                 html += '<ul class="mt-snj__errors">'
 
-                                if (res.error.messages !== null) {
+                                if (res.error.messages) {
                                     res.error.messages.forEach((mes) => {
                                         html += '<li>' + mes + '</li>'
                                     })
